@@ -16,7 +16,7 @@ CC_ENTITY_PATH = "__ControlCombinator__/graphics/control_combinator_entities.png
 
 --Master window dimensions
 CC_WINDOW_WIDTH = 1000
-CC_WINDOW_HEIGHT = 500
+CC_WINDOW_HEIGHT = 400
 
 --General padding amount
 CC_WINDOW_PADDING = 10
