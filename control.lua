@@ -9,7 +9,7 @@ script.on_init(function()
 		{
 			combinators = {
 				{
-					name = "",
+					name = ""
 					entity = *Control Combinator Entity Reference*,
 					outputs = {
 						owner = "",          -- Player index or force name
@@ -22,6 +22,7 @@ script.on_init(function()
 			categories = {
 				{
 					name = "",
+					description = "",
 					signals = {
 						{
 							name = "",
@@ -93,7 +94,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.style.visible = false
 		player.gui.top.CCMaster.style.visible = false
 		player.gui.top.CCToggle.style.visible = true
-	elseif element.name == "CCNCButton" then
+	elseif element.name == "CCNCButton" and isCCGUIElement(element) then
 		global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)].name = element.parent.CCNCField.text
 		element.parent.style.visible = false
 		element.parent.CCNCField.text = ""
@@ -106,6 +107,57 @@ script.on_event(defines.events.on_gui_click, function(event)
 		end
 		CCContainer.addCategoryContainer.style.visible = not CCContainer.addCategoryContainer.style.visible
 		CCContainer.container.style.visible = not CCContainer.addCategoryContainer.style.visible
+	elseif element.name == "newCategoryButton" and isCCGUIElement(element) then
+
+		--Add the new category to the appropriate ccdata entry
+
+		if CCContainer.addCategoryContainer.newCategoryPublic.state then
+
+			--Format data
+			local newCategory = {
+				name = CCContainer.addCategoryContainer.newCategoryName.text,
+				description = CCContainer.addCategoryContainer.newCategoryDesc.text,
+				signals = {}
+			}
+
+			--Add new category to global data
+			table.insert(global.ccdata[player.force.name].categories, newCategory)
+
+			--Add new category to all GUIs in force
+			for _, p in ipairs(player.force.players) do
+				addCategory(p.gui.top.CCMaster.CCContainer.container.publicCategories, newCategory)
+			end
+		else
+
+			--Format data
+			local newCategory = {
+				name = CCContainer.addCategoryContainer.newCategoryName.text,
+				description = CCContainer.addCategoryContainer.newCategoryDesc.text,
+				signals = {}
+			}
+
+			--Add new category to global data
+			table.insert(global.ccdata[player.index].categories, newCategory)
+
+			--Add new category to only this player's GUI
+			addCategory(CCContainer.container.privateCategories, newCategory)
+		end
+
+		--Go back to main GUI page
+
+		if CCContainer.addCategoryContainer.style.visible then
+			CCContainer.top.addCategory.caption = "Add Category"
+		else
+			CCContainer.top.addCategory.caption = "Back"
+		end
+		CCContainer.addCategoryContainer.style.visible = not CCContainer.addCategoryContainer.style.visible
+		CCContainer.container.style.visible = not CCContainer.addCategoryContainer.style.visible
+
+		--Clear form
+
+		CCContainer.addCategoryContainer.newCategoryName.text = ""
+		CCContainer.addCategoryContainer.newCategoryDesc.text = ""
+		CCContainer.addCategoryContainer.newCategoryPublic.state = false
 	end
 end)
 
@@ -127,8 +179,8 @@ function createGUI(player)
 	})
 	local CCContainer = CCMaster.add{type="frame", name="CCContainer", direction="vertical"}
 	setStyles(CCContainer, {
-		minimal_width = CC_WINDOW_WIDTH - 105,
-		maximal_width = CC_WINDOW_WIDTH - 105
+		minimal_width = CC_WINDOW_WIDTH - 110,
+		maximal_width = CC_WINDOW_WIDTH - 110
 	})
 	setStyles(CCContainer.add{type="flow", name="top", direction="horizontal"}, {
 		minimal_width = CC_WINDOW_WIDTH,
@@ -231,7 +283,7 @@ end
 
 function addCategory(container, category)
 	local categoryActive = false
-	local categoryFrame = container.add{type="frame", name=category.name, direction="vertical"}
+	local categoryFrame = container.add{type="frame", name=category.name, direction="vertical", tooltip=category.description}
 	categoryFrame.add{type="flow", name="top", direction="horizontal"}
 	categoryFrame.top.add{type="label", name="categoryLabel", caption=category.name}.style.font = "default-large-bold"
 	for _, signal in ipairs(category.signals) do
