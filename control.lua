@@ -194,14 +194,23 @@ function createGUI(player)
 		minimal_height = CC_WINDOW_HEIGHT,
 		maximal_height = CC_WINDOW_HEIGHT
 	})
-	addCategoryContainer.add{type="textfield", name="newCategoryName", caption="Category name"}
-	setStyles(addCategoryContainer.add{type="textfield", name="newCategoryDesc", caption="Category description"}, {
-		minimal_width=400,
-		maximal_width=400,
-		minimal_height=200,
-		maximal_height=200
+	setStyles(addCategoryContainer.add{type="label", caption="Category name"}, {
+		top_padding = 30,
+		font = "default-large-bold"
 	})
-	addCategoryContainer.add{type="checkbox", name="newCategoryPublic", state=false, caption="Make Category public?", tooltip="Checking this box will open your Category to everyone in your Force. Any of them will be able to use, edit or delete this Category. It will also be listed in the main menu under \"Available to your force\" instead of \"Available only to you\"."}
+	addCategoryContainer.add{type="textfield", name="newCategoryName"}
+	setStyles(addCategoryContainer.add{type="label", caption="Category description"}, {
+		top_padding = 30,
+		font = "default-large-bold"
+	})
+	setStyles(addCategoryContainer.add{type="textfield", name="newCategoryDesc"}, {
+		minimal_width=400,
+		maximal_width=400
+	})
+	setStyles(addCategoryContainer.add{type="checkbox", name="newCategoryPublic", state=false, caption="Make Category public", tooltip="Checking this box will open your Category to everyone in your Force. Any of them will be able to use, edit or delete this Category. It will also be listed in the main menu under \"Available to your force\" instead of \"Available only to you\"."}, {
+		top_padding = 30,
+		bottom_padding = 30
+	})
 	addCategoryContainer.add{type="button", name="newCategoryButton", caption="Create Category"}
 	
 	--CREATE ADD SIGNAL PAGE--
