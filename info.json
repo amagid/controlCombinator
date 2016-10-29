@@ -1,0 +1,9 @@
+{
+	"name": "ControlCombinator",
+	"version": "0.0.0",
+	"title": "Remotely control any circuit network!",
+	"author": "amag1234",
+	"contact": "ahm64@case.edu",
+	"description": "The Control Combinator can be used through the player's GUI to remotely supply any signal to the circuit network to which the combinator device is connected.",
+	"factorio_version": "0.14"
+}
