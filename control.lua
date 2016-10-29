@@ -87,29 +87,6 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.top.caption = "Loading..."
 		CCContainer.style.visible = true
 
-		--If there are no categories in data, show message
-		if #global.ccdata[event.player_index].categories == 0 then
-			CCContainer.container.privateCategories.noCategoriesMessage.style.visible = true
-
-		else
-			CCContainer.container.privateCategories.noCategoriesMessage.style.visible = false
-			for _, category in ipairs(global.ccdata[event.player_index].categories) do
-				addCategory(CCContainer.container.privateCategories, category)
-			end
-		end
-
-		if #global.ccdata[player.force.name].categories == 0 then
-			CCContainer.container.publicCategories.noCategoriesMessage.style.visible = true
-		else
-			CCContainer.container.publicCategories.noCategoriesMessage.style.visible = false
-			for _, category in ipairs(global.ccdata[event.player_index].categories) do
-				addCategory(CCContainer.container.publicCategories, category)
-			end
-		end
-
-		addLabelPadding(player.gui.top.CCMaster)
-		setWidths(player.gui.top.CCMaster, 0)
-
 		CCContainer.top.caption = "Control Combinators"
 		CCContainer.container.style.visible = true
 	elseif element.name == "CCToggle" then
@@ -185,6 +162,32 @@ function createGUI(player)
 		bottom_padding = 10
 	})
 	container.publicCategories.add{type="label", name="noCategoriesMessage", caption="You have no private categories."}
+
+	--POPULATE MAIN GUI WINDOW--
+
+	--If there are no categories in data, show message
+	if #global.ccdata[player.index].categories == 0 then
+		CCContainer.container.privateCategories.noCategoriesMessage.style.visible = true
+
+	else
+		CCContainer.container.privateCategories.noCategoriesMessage.style.visible = false
+		for _, category in ipairs(global.ccdata[player.index].categories) do
+			addCategory(CCContainer.container.privateCategories, category)
+		end
+	end
+
+	if #global.ccdata[player.force.name].categories == 0 then
+		CCContainer.container.publicCategories.noCategoriesMessage.style.visible = true
+	else
+		CCContainer.container.publicCategories.noCategoriesMessage.style.visible = false
+		for _, category in ipairs(global.ccdata[player.index].categories) do
+			addCategory(CCContainer.container.publicCategories, category)
+		end
+	end
+
+	addLabelPadding(player.gui.top.CCMaster)
+	setWidths(player.gui.top.CCMaster, 0)
+
 
 	--CREATE ADD CATEGORY PAGE--
 	
