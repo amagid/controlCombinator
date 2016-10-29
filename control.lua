@@ -125,7 +125,13 @@ script.on_event(defines.events.on_gui_click, function(event)
 end)
 
 function createGUI(player)
+
+	--CREATE TOGGLE BUTTON--
+
 	player.gui.top.add{type="button", name="CCToggle", caption="Control Combinator", tooltip="Toggle the Control Combinator menu."}
+
+	--CREATE MAIN GUI WINDOW--
+
 	local CCMaster = player.gui.top.add{type="flow", name="CCMaster"}
 	setStyles(CCMaster, {
 		top_padding = 100,
@@ -136,8 +142,8 @@ function createGUI(player)
 	})
 	local CCContainer = CCMaster.add{type="frame", name="CCContainer", direction="vertical"}
 	setStyles(CCContainer, {
-		minimal_width = CC_WINDOW_WIDTH - 100,
-		maximal_width = CC_WINDOW_WIDTH - 100
+		minimal_width = CC_WINDOW_WIDTH - 105,
+		maximal_width = CC_WINDOW_WIDTH - 105
 	})
 	setStyles(CCContainer.add{type="flow", name="top", direction="horizontal"}, {
 		minimal_width = CC_WINDOW_WIDTH,
@@ -151,7 +157,7 @@ function createGUI(player)
 	})
 	CCContainer.top.add{type="button", name="addCategory", caption="Add Category"}
 	CCContainer.top.add{type="button", name="addSignal", caption="Add Signal"}
-	local container = CCContainer.add{type="scroll-pane", name="container", vertical_scroll_policy="always", horizontal_scroll_policy="never", direction="vertical"}
+	local container = CCContainer.add{type="scroll-pane", name="container", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical"}
 	setStyles(container, {
 		visible = false,
 		minimal_height = CC_WINDOW_HEIGHT,
@@ -172,7 +178,28 @@ function createGUI(player)
 	})
 	container.publicCategories.add{type="label", name="noCategoriesMessage", caption="You have no private categories."}
 
-	--CREATE COMBINATOR LABEL GUI--
+	--CREATE ADD CATEGORY PAGE--
+	
+	local addCategoryContainer = CCContainer.add{type="scroll-pane", name="addCategoryContainer", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical", caption="Add New Category"}
+	setStyles(addCategoryContainer, {
+		visible = false,
+		minimal_height = CC_WINDOW_HEIGHT,
+		maximal_height = CC_WINDOW_HEIGHT
+	})
+	addCategoryContainer.add{type="textfield", name="newCategoryName", caption="Category name"}
+	setStyles(addCategoryContainer.add{type="textfield", name="newCategoryDesc", caption="Category description"}, {
+		minimal_width=400,
+		maximal_width=400,
+		minimal_height=200,
+		maximal_height=200
+	})
+	addCategoryContainer.add{type="checkbox", name="newCategoryPublic", state=false, caption="Make Category public?", tooltip="Checking this box will open your Category to everyone in your Force. Any of them will be able to use, edit or delete this Category. It will also be listed in the main menu under \"Available to your force\" instead of \"Available only to you\"."}
+	
+	--CREATE ADD SIGNAL PAGE--
+	
+	
+
+	--CREATE NEW COMBINATOR GUI--
 
 	player.gui.center.add{type="frame", name="CCNewCombinator", caption="Name this Control Combinator"}.style.visible = false
 	player.gui.center.CCNewCombinator.add{type="textfield", name="CCNCIndex"}.style.visible = false
@@ -231,12 +258,14 @@ function addCategory(container, category)
 end
 
 script.on_event(defines.events.on_built_entity, function(event)
-	event.created_entity.operable = false
-	game.players[event.player_index].gui.center.CCNewCombinator.style.visible = true
-	table.insert(global.ccdata[event.player_index].combinators, {
-		name = nil,
-		entity = event.created_entity,
-		outputs = {}
-	})
-	game.players[event.player_index].gui.center.CCNewCombinator.CCNCIndex.text = #global.ccdata[event.player_index].combinators
+	if event.created_entity.name == CC_NAME then
+		event.created_entity.operable = false
+		game.players[event.player_index].gui.center.CCNewCombinator.style.visible = true
+		table.insert(global.ccdata[event.player_index].combinators, {
+			name = nil,
+			entity = event.created_entity,
+			outputs = {}
+		})
+		game.players[event.player_index].gui.center.CCNewCombinator.CCNCIndex.text = #global.ccdata[event.player_index].combinators
+	end
 end)
