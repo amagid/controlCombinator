@@ -30,3 +30,13 @@ function setWidths(guiElement, layer)
 		end
 	end
 end
+
+function isCCGUIElement(guiElement)
+	while guiElement.parent do
+		if guiElement.name == "CCMaster" then
+			return true
+		end
+		guiElement = guiElement.parent
+	end
+	return false
+end
