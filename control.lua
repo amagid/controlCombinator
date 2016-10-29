@@ -121,6 +121,14 @@ script.on_event(defines.events.on_gui_click, function(event)
 		element.parent.style.visible = false
 		element.parent.CCNCField.text = ""
 		element.parent.CCNCIndex.text = ""
+	elseif element.name == "addCategory" and isCCGUIElement(element) then
+		if CCContainer.addCategoryContainer.style.visible then
+			CCContainer.top.addCategory.caption = "Add Category"
+		else
+			CCContainer.top.addCategory.caption = "Back"
+		end
+		CCContainer.addCategoryContainer.style.visible = not CCContainer.addCategoryContainer.style.visible
+		CCContainer.container.style.visible = not CCContainer.addCategoryContainer.style.visible
 	end
 end)
 
@@ -194,6 +202,7 @@ function createGUI(player)
 		maximal_height=200
 	})
 	addCategoryContainer.add{type="checkbox", name="newCategoryPublic", state=false, caption="Make Category public?", tooltip="Checking this box will open your Category to everyone in your Force. Any of them will be able to use, edit or delete this Category. It will also be listed in the main menu under \"Available to your force\" instead of \"Available only to you\"."}
+	addCategoryContainer.add{type="button", name="newCategoryButton", caption="Create Category"}
 	
 	--CREATE ADD SIGNAL PAGE--
 	
