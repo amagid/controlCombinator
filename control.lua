@@ -10,7 +10,13 @@ script.on_init(function()
 			combinators = {
 				{
 					name = "",
-					entity = *Control Combinator Entity Reference*
+					entity = *Control Combinator Entity Reference*,
+					outputs = {
+						owner = "",          -- Player index or force name
+						category = "",       -- Category index
+						signal = "",         -- Signal index
+						output = "",         -- Output index
+					}
 				}
 			},
 			categories = {
@@ -61,7 +67,7 @@ end)
 script.on_event(defines.events.on_research_finished, function(event)
 	if event.research.name == CC_NAME then
 		for player in pairs(event.research.force.players) do
-			if player.valid then
+			if player and type(player) ~= "number" and type(player) ~= "function" and player.valid then
 				createGUI(player)
 			end
 		end
@@ -73,6 +79,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 	local element = event.element
 	local CCContainer = player.gui.top.CCMaster.CCContainer
 	if element.name == "CCToggle" and not CCContainer.style.visible then
+		local CCContainer = player.gui.top.CCMaster.CCContainer
 		element.style.visible = false
 		--Hide central gui until fully loaded
 		player.gui.top.CCMaster.style.visible = true
@@ -109,6 +116,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.style.visible = false
 		player.gui.top.CCMaster.style.visible = false
 		player.gui.top.CCToggle.style.visible = true
+	elseif element.name == "CCNCButton" then
+		global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)].name = element.parent.CCNCField.text
+		element.parent.style.visible = false
+		element.parent.CCNCField.text = ""
+		element.parent.CCNCIndex.text = ""
 	end
 end)
 
@@ -159,6 +171,14 @@ function createGUI(player)
 		bottom_padding = 10
 	})
 	container.publicCategories.add{type="label", name="noCategoriesMessage", caption="You have no private categories."}
+
+	--CREATE COMBINATOR LABEL GUI--
+
+	player.gui.center.add{type="frame", name="CCNewCombinator", caption="Name this Control Combinator"}.style.visible = false
+	player.gui.center.CCNewCombinator.add{type="textfield", name="CCNCIndex"}.style.visible = false
+	player.gui.center.CCNewCombinator.add{type="textfield", name="CCNCField"}
+	player.gui.center.CCNewCombinator.add{type="button", name="CCNCButton", caption="Set Name"}
+
 end
 
 function addCategory(container, category)
@@ -209,3 +229,14 @@ function addCategory(container, category)
 		end
 	end
 end
+
+script.on_event(defines.events.on_built_entity, function(event)
+	event.created_entity.operable = false
+	game.players[event.player_index].gui.center.CCNewCombinator.style.visible = true
+	table.insert(global.ccdata[event.player_index].combinators, {
+		name = nil,
+		entity = event.created_entity,
+		outputs = {}
+	})
+	game.players[event.player_index].gui.center.CCNewCombinator.CCNCIndex.text = #global.ccdata[event.player_index].combinators
+end)
