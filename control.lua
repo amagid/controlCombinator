@@ -79,6 +79,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 	local player = game.players[event.player_index]
 	local element = event.element
 	local CCContainer = player.gui.top.CCMaster.CCContainer
+	--If this is a toggle button and the GUI isn't visible
 	if element.name == "CCToggle" and not CCContainer.style.visible then
 		local CCContainer = player.gui.top.CCMaster.CCContainer
 		element.style.visible = false
@@ -90,15 +91,18 @@ script.on_event(defines.events.on_gui_click, function(event)
 
 		CCContainer.top.caption = "Control Combinators"
 		CCContainer.container.style.visible = true
+	--If this is a toggle button and the GUI is visible
 	elseif element.name == "CCToggle" then
 		CCContainer.style.visible = false
 		player.gui.top.CCMaster.style.visible = false
 		player.gui.top.CCToggle.style.visible = true
+	--If this is the Combinator naming GUI
 	elseif element.name == "CCNCButton" and isCCGUIElement(element) then
 		global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)].name = element.parent.CCNCField.text
 		element.parent.style.visible = false
 		element.parent.CCNCField.text = ""
 		element.parent.CCNCIndex.text = ""
+	--If this is the addCategory button
 	elseif element.name == "addCategory" and isCCGUIElement(element) then
 		if CCContainer.addCategoryContainer.style.visible then
 			CCContainer.top.addCategory.caption = "Add Category"
@@ -107,6 +111,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 		end
 		CCContainer.addCategoryContainer.style.visible = not CCContainer.addCategoryContainer.style.visible
 		CCContainer.container.style.visible = not CCContainer.addCategoryContainer.style.visible
+	--If this is the New Category button
 	elseif element.name == "newCategoryButton" and isCCGUIElement(element) then
 
 		--Add the new category to the appropriate ccdata entry
@@ -158,6 +163,9 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.addCategoryContainer.newCategoryName.text = ""
 		CCContainer.addCategoryContainer.newCategoryDesc.text = ""
 		CCContainer.addCategoryContainer.newCategoryPublic.state = false
+
+	--If this is the Delete category button
+	--If this is the More 
 	end
 end)
 
@@ -221,6 +229,7 @@ function createGUI(player)
 	if #global.ccdata[player.index].categories == 0 then
 		CCContainer.container.privateCategories.noCategoriesMessage.style.visible = true
 
+	--Otherwise, list out the categories
 	else
 		CCContainer.container.privateCategories.noCategoriesMessage.style.visible = false
 		for _, category in ipairs(global.ccdata[player.index].categories) do
@@ -228,8 +237,10 @@ function createGUI(player)
 		end
 	end
 
+	--If there are no Force categories, show message
 	if #global.ccdata[player.force.name].categories == 0 then
 		CCContainer.container.publicCategories.noCategoriesMessage.style.visible = true
+	--Otherwise, list out the categories
 	else
 		CCContainer.container.publicCategories.noCategoriesMessage.style.visible = false
 		for _, category in ipairs(global.ccdata[player.index].categories) do
@@ -237,7 +248,10 @@ function createGUI(player)
 		end
 	end
 
+	--Add padding to the top of every existing label that is next to buttons
 	addLabelPadding(player.gui.top.CCMaster)
+
+	--Force all boxes to be full width
 	setWidths(player.gui.top.CCMaster, 0)
 
 
@@ -268,8 +282,53 @@ function createGUI(player)
 	})
 	addCategoryContainer.add{type="button", name="newCategoryButton", caption="Create Category"}
 	
+	--CREATE EDIT CATEGORY PAGE--
+
+	local editCategoryContainer = CCContainer.add{type="scroll-pane", name="editCategoryContainer", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical", caption="Edit Category"}
+
+	setStyles(editCategoryContainer, {
+		visible = false,
+		minimal_height = CC_WINDOW_HEIGHT,
+		maximal_height = CC_WINDOW_HEIGHT
+	})
+
+	setStyles(editCategoryContainer.add{type="label", caption="Category name"}, {
+		top_padding = 30,
+		font = "default-large-bold"
+	})
+	editCategoryContainer.add{type="textfield", name="editCategoryName"}
+	setStyles(editCategoryContainer.add{type="label", caption="Category description"}, {
+		top_padding = 30,
+		font = "default-large-bold"
+	})
+	setStyles(editCategoryContainer.add{type="textfield", name="editCategoryDesc"}, {
+		minimal_width=400,
+		maximal_width=400
+	})
+	setStyles(editCategoryContainer.add{type="checkbox", name="editCategoryPublic", state=false, caption="Make Category public", tooltip="Checking this box will open your Category to everyone in your Force. Any of them will be able to use, edit or delete this Category. It will also be listed in the main menu under \"Available to your force\" instead of \"Available only to you\"."}, {
+		top_padding = 30,
+		bottom_padding = 30
+	})
+
+	local ECCButtonRow = editCategoryContainer.add{type="flow", direction="horizontal"}
+	ECCButtonRow.add{type="button", name="editCategorySaveButton", caption="Save Changes"}
+	ECCButtonRow.add{type="button", name="editCategoryCancelButton", caption="Discard Changes"}
+	ECCButtonRow.add{type="button", name="editCategoryDeleteButton", caption="Delete Category"}
+
+	--CREATE CONFIRM DELETE CATEGORY BOX--
+
+
+
 	--CREATE ADD SIGNAL PAGE--
 	
+
+
+	--CREATE EDIT SIGNAL PAGE--
+
+
+
+	--CREATE CONFIRM DELETE SIGNAL BOX--
+
 	
 
 	--CREATE NEW COMBINATOR GUI--
@@ -301,6 +360,7 @@ function addCategory(container, category)
 		categoryFrame.top.categoryLabel.style.font_color = {r=1, g=1, b=1}
 	end
 	categoryFrame.top.add{type="button", name="add", caption="Add Signal"}
+	categoryFrame.top.add{type="button", name="edit", caption="Edit Category"}
 	categoryFrame.top.add{type="button", name="delete", caption="Delete"}
 	
 	categoryFrame.add{type="label", name="noSignalsMessage", caption="This category has no signals."}
