@@ -1,7 +1,7 @@
 --[[data:extend({
 	{
 		type="button-style",
-		name="CCToggleButton",
+		name="TBToggleButton",
 		top_padding=5,
 		bottom_padding=10,
 		left_padding=20,

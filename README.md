@@ -1,2 +1,2 @@
-# controlCombinator
-Factorio mod that adds a remote control combinator
+# TrenchBombs
+Balanced method to make your factory invincible.

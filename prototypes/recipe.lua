@@ -1,10 +1,18 @@
 data:extend({
 	{
 		type = "recipe",
-		name = CC_NAME,
-		enabled = false,
+		name = TB_NAME,
+		enabled = true,
 		ingredients = {
 		},
-		result = CC_NAME
+		result = TB_NAME
+	},
+	{
+		type = "recipe",
+		name = TB_DETONATOR_NAME,
+		enabled = true,
+		ingredients = {
+		},
+		result = TB_DETONATOR_NAME
 	}
 })

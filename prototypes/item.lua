@@ -1,11 +1,20 @@
 data:extend({
 	{
 		type = "item",
-		name = CC_NAME,
-		icon = CC_ICON_PATH,
+		name = TB_NAME,
+		icon = TB_ICON_PATH,
 		flags = { "goes-to-quickbar" },
 		subgroup = "circuit-network",
-		place_result = CC_NAME,
-		stack_size = 100
+		place_result = TB_NAME,
+		stack_size = 200
+	},
+	{
+		type = "item",
+		name = TB_DETONATOR_NAME,
+		icon = TB_DETONATOR_ICON_PATH,
+		flags = { "goes-to-quickbar" },
+		subgroup = "circuit-network",
+		place_result = TB_DETONATOR_NAME,
+		stack_size = 10
 	}
 })

@@ -1,12 +1,12 @@
 data:extend({
 	{
 		type = "technology",
-		name = CC_NAME,
-		icon = CC_ICON_PATH,
+		name = TB_NAME,
+		icon = TB_ICON_PATH,
 		effects = {
 			{
 				type = "unlock-recipe",
-				recipe = CC_NAME
+				recipe = TB_NAME
 			}
 		},
 		unit = {
