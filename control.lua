@@ -93,10 +93,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 	--If this is the Combinator naming GUI
 	elseif element.name == "CCNCButton" then
 		global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)].name = element.parent.CCNCField.text
+		addCombinator(CCContainer.container, global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)])
 		element.parent.style.visible = false
 		element.parent.CCNCField.text = ""
 		element.parent.CCNCIndex.text = ""
-		addCombinator(CCContainer.container, global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)])
 	end
 end)
 
