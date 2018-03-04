@@ -68,7 +68,6 @@ script.on_event(defines.events.on_gui_click, function(event)
 
 	--If this is the master CC GUI toggle button and the GUI isn't visible
 	if element.name == "CCToggle" and not CCContainer.style.visible then
-		local CCContainer = player.gui.top.CCMaster.CCContainer
 		-- Hide the button
 		element.style.visible = false
 		--Hide central gui until fully loaded
@@ -90,6 +89,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 		element.parent.style.visible = false
 		element.parent.CCNCField.text = ""
 		element.parent.CCNCIndex.text = ""
+		addCombinator(CCContainer.container, global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)])
 	end
 end)
 
@@ -230,11 +230,8 @@ script.on_event(defines.events.on_built_entity, function(event)
 	if event.created_entity.name == CC_NAME then
 		event.created_entity.operable = false
 		game.players[event.player_index].gui.center.CCNewCombinator.style.visible = true
-		table.insert(global.ccdata[event.player_index].combinators, {
-			name = nil,
-			entity = event.created_entity,
-			outputs = {}
-		})
+		local newCombinator = generateCombinatorReference("New Combinator", event.created_entity)
+		table.insert(global.ccdata[event.player_index].combinators, newCombinator)
 		game.players[event.player_index].gui.center.CCNewCombinator.CCNCIndex.text = #global.ccdata[event.player_index].combinators
 	end
 end)

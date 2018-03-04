@@ -37,11 +37,18 @@ function CC_WINDOW_SETSTYLE(styleObject)
 end
 
 -- Create a new combinator reference with the given arguments
-function generateCombinatorReference(name, entity) {
+function generateCombinatorReference(name, entity)
 	return {
 				name = name                      -- A user-defined name for the combinator
 				entity = entity,                 -- A reference to the actual combinator entity
 				active = false,                  -- Is this combinator outputting a signal?
 				output = nil
 			}
-}
+end
+
+function addCombinator(container, combinator)
+	setStyles(container.add{type="label", caption=combinator.name}, {
+		top_padding = 30,
+		font = "default-large-bold"
+	})
+end
