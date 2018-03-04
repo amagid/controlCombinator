@@ -75,7 +75,7 @@ function cleanBadCombinators(playerCCData)
 		if combinator.entity.valid then
 			table.insert(newList, combinator)
 		elseif combinator.gui ~= nil then
-			combinator.gui.style.visible = false
+			combinator.gui.destroy()
 		end
 	end
 	playerCCData.combinators = newList
