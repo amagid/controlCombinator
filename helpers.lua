@@ -41,14 +41,17 @@ function generateCombinatorReference(name, entity)
 	return {
 				name = name,                     -- A user-defined name for the combinator
 				entity = entity,                 -- A reference to the actual combinator entity
+				gui = nil,                       -- A reference to the gui element representing this combinator
 				active = false,                  -- Is this combinator outputting a signal?
 				output = nil
 			}
 end
 
 function addCombinator(container, combinator)
-	setStyles(container.add{type="label", caption=combinator.name}, {
+	local guiReference = container.add{type="label", caption=combinator.name}
+	setStyles(guiReference, {
 		top_padding = 30,
 		font = "default-large-bold"
 	})
+	combinator.gui = guiReference
 end
