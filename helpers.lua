@@ -40,6 +40,7 @@ end
 function generateCombinatorReference(name, entity)
 	return {
 				name = name,                     -- A user-defined name for the combinator
+				description = "",                -- The description of this combinator (user-defined)
 				entity = entity,                 -- A reference to the actual combinator entity
 				gui = nil,                       -- A reference to the gui element representing this combinator
 				active = false,                  -- Is this combinator outputting a signal?
