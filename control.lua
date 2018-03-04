@@ -7,64 +7,48 @@ script.on_init(function()
 		Table to store all control combinator data, indexed by owning player for private CCs or force name for public CCs.
 		Data format:
 		{
-			combinators = {
-				{
-					name = ""
-					entity = *Control Combinator Entity Reference*,
-					outputs = {
-						owner = "",          -- Player index or force name
-						category = "",       -- Category index
-						signal = "",         -- Signal index
-						output = "",         -- Output index
-					}
-				}
-			},
-			categories = {
-				{
-					name = "",
-					description = "",
-					signals = {
-						{
-							name = "",
-							outputs = {
-								{
-									color = "",        --color is green or red (wire colors)
-									line = "",         --line is the output signal type (water, crude oil, virtual circuit 1...)
-									value = "",        --the output value
-									type = "",         --type is "pulse", "duration", "toggle" or "circuit"
-									combinator = int,  --combinator is the index of the combinator in the above array
-									active = boolean   --is this output currently active?
-								}
-							}
+			<PLAYER ID> = {
+				combinators = {
+					{
+						name = ""
+						entity = *Control Combinator Entity Reference*,
+						output = {
+							signal_id             -- The type of the signal to output
+							strength              -- The value of the signal to output
+							mode                  -- The signal mode (toggle, duration)
+							duration              -- Only matters for DURATION mode. The duration of the signal
 						}
 					}
 				}
-			}
+			},
 		}
 	--]]
+	-- Make sure our data storage is initialized, but don't reinitialize if a new player is entering
 	if not global.ccdata then
 		global.ccdata = {}
 	end
 end)
 
+-- Initialize the new player's Control Combinator list
 script.on_event(defines.events.on_player_created, function(event)
+	-- Initialize global CCData if not yet initialized
 	if not global.ccdata then
 		global.ccdata = {}
 	end
 
+	-- Store the player to improve efficiency
 	local player = game.players[event.player_index]
 
+	-- Generate new base CCData entry
 	global.ccdata[event.player_index] = CC_DEFAULT_PRIVATE_DATA
 
-	if not global.ccdata[player.force.name] then
-		global.ccdata[player.force.name] = CC_DEFAULT_PUBLIC_DATA
-	end
-
+	-- If the player's force has already researched the CC tech (or we're in DEBUG mode), create their CC GUI
 	if player.force.technologies[CC_NAME].researched or DEBUG then
 		createGUI(player)
 	end
 end)
 
+-- When a force researches the CC tech, generate CC GUIs for all players on that force
 script.on_event(defines.events.on_research_finished, function(event)
 	if event.research.name == CC_NAME then
 		for player in pairs(event.research.force.players) do
@@ -75,13 +59,17 @@ script.on_event(defines.events.on_research_finished, function(event)
 	end
 end)
 
+-- Handle clicks of CC GUI elements
 script.on_event(defines.events.on_gui_click, function(event)
+	-- Store, element, and GUI container for faster access
 	local player = game.players[event.player_index]
 	local element = event.element
 	local CCContainer = player.gui.top.CCMaster.CCContainer
-	--If this is a toggle button and the GUI isn't visible
+
+	--If this is the master CC GUI toggle button and the GUI isn't visible
 	if element.name == "CCToggle" and not CCContainer.style.visible then
 		local CCContainer = player.gui.top.CCMaster.CCContainer
+		-- Hide the button
 		element.style.visible = false
 		--Hide central gui until fully loaded
 		player.gui.top.CCMaster.style.visible = true
@@ -91,81 +79,17 @@ script.on_event(defines.events.on_gui_click, function(event)
 
 		CCContainer.top.caption = "Control Combinators"
 		CCContainer.container.style.visible = true
-	--If this is a toggle button and the GUI is visible
+	--If this is the master CC GUI toggle button and the GUI is visible
 	elseif element.name == "CCToggle" then
 		CCContainer.style.visible = false
 		player.gui.top.CCMaster.style.visible = false
 		player.gui.top.CCToggle.style.visible = true
 	--If this is the Combinator naming GUI
-	elseif element.name == "CCNCButton" and isCCGUIElement(element) then
+	elseif element.name == "CCNCButton" then
 		global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)].name = element.parent.CCNCField.text
 		element.parent.style.visible = false
 		element.parent.CCNCField.text = ""
 		element.parent.CCNCIndex.text = ""
-	--If this is the addCategory button
-	elseif element.name == "addCategory" and isCCGUIElement(element) then
-		if CCContainer.addCategoryContainer.style.visible then
-			CCContainer.top.addCategory.caption = "Add Category"
-		else
-			CCContainer.top.addCategory.caption = "Back"
-		end
-		CCContainer.addCategoryContainer.style.visible = not CCContainer.addCategoryContainer.style.visible
-		CCContainer.container.style.visible = not CCContainer.addCategoryContainer.style.visible
-	--If this is the New Category button
-	elseif element.name == "newCategoryButton" and isCCGUIElement(element) then
-
-		--Add the new category to the appropriate ccdata entry
-
-		if CCContainer.addCategoryContainer.newCategoryPublic.state then
-
-			--Format data
-			local newCategory = {
-				name = CCContainer.addCategoryContainer.newCategoryName.text,
-				description = CCContainer.addCategoryContainer.newCategoryDesc.text,
-				signals = {}
-			}
-
-			--Add new category to global data
-			table.insert(global.ccdata[player.force.name].categories, newCategory)
-
-			--Add new category to all GUIs in force
-			for _, p in ipairs(player.force.players) do
-				addCategory(p.gui.top.CCMaster.CCContainer.container.publicCategories, newCategory)
-			end
-		else
-
-			--Format data
-			local newCategory = {
-				name = CCContainer.addCategoryContainer.newCategoryName.text,
-				description = CCContainer.addCategoryContainer.newCategoryDesc.text,
-				signals = {}
-			}
-
-			--Add new category to global data
-			table.insert(global.ccdata[player.index].categories, newCategory)
-
-			--Add new category to only this player's GUI
-			addCategory(CCContainer.container.privateCategories, newCategory)
-		end
-
-		--Go back to main GUI page
-
-		if CCContainer.addCategoryContainer.style.visible then
-			CCContainer.top.addCategory.caption = "Add Category"
-		else
-			CCContainer.top.addCategory.caption = "Back"
-		end
-		CCContainer.addCategoryContainer.style.visible = not CCContainer.addCategoryContainer.style.visible
-		CCContainer.container.style.visible = not CCContainer.addCategoryContainer.style.visible
-
-		--Clear form
-
-		CCContainer.addCategoryContainer.newCategoryName.text = ""
-		CCContainer.addCategoryContainer.newCategoryDesc.text = ""
-		CCContainer.addCategoryContainer.newCategoryPublic.state = false
-
-	--If this is the Delete category button
-	--If this is the More 
 	end
 end)
 

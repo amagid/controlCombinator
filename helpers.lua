@@ -41,3 +41,26 @@ function isCCGUIElement(guiElement)
 	end
 	return flag
 end
+
+--Set all padding and maximum sizes
+function CC_WINDOW_SETSTYLE(styleObject)
+	styleObject.top_padding = CC_WINDOW_PADDING
+	styleObject.right_padding = CC_WINDOW_PADDING
+	styleObject.bottom_padding = CC_WINDOW_PADDING
+	styleObject.left_padding = CC_WINDOW_PADDING
+end
+
+-- Create a new combinator reference with the given arguments
+function generateCombinatorReference(name, entity, signalId, strength, mode, duration) {
+	return {
+				name = name                      -- A user-defined name for the combinator
+				entity = entity,                 -- A reference to the actual combinator entity
+				active = false,                  -- Is this combinator outputting a signal?
+				output = {
+					signalId = signalId          -- The type of the signal to output
+					strength = strength          -- The value of the signal to output
+					mode = mode                  -- The signal mode (toggle, duration)
+					duration = duration          -- Only matters for DURATION mode. The duration of the signal
+				}
+			}
+}
