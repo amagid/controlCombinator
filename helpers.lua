@@ -84,3 +84,12 @@ function clearEditCombinatorPage(page)
 	page.editCombinatorName.text = ""
 	page.editCombinatorDesc.text = ""
 end
+
+function findCombinatorByName(combinatorList, name)
+	for _, combinator in pairs(combinatorList) do
+		if combinator.name == name then
+			return combinator
+		end
+	end
+	return nil
+end
