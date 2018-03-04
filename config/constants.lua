@@ -29,6 +29,8 @@ CC_LABEL_PADDING = 8
 -------------- DEFAULT DATA ---------------
 -------------------------------------------
 
-CC_DEFAULT_PRIVATE_DATA = {
-	combinators = {}	
-}
+function CC_DEFAULT_PRIVATE_DATA()
+	return {
+		combinators = {}	
+	}
+end

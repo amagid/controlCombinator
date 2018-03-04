@@ -40,7 +40,7 @@ script.on_event(defines.events.on_player_created, function(event)
 	local player = game.players[event.player_index]
 
 	-- Generate new base CCData entry
-	global.ccdata[event.player_index] = CC_DEFAULT_PRIVATE_DATA
+	global.ccdata[event.player_index] = CC_DEFAULT_PRIVATE_DATA()
 
 	-- If the player's force has already researched the CC tech (or we're in DEBUG mode), create their CC GUI
 	if player.force.technologies[CC_NAME].researched or DEBUG then
@@ -50,9 +50,16 @@ end)
 
 -- When a force researches the CC tech, generate CC GUIs for all players on that force
 script.on_event(defines.events.on_research_finished, function(event)
+	game.players[1].print("Researched a tech: " .. event.research.name)
 	if event.research.name == CC_NAME then
-		for player in pairs(event.research.force.players) do
+		game.players[1].print("It's our tech!")
+		for _, player in pairs(event.research.force.players) do
+			if global.ccdata[player.index] == nil then
+				global.ccdata[player.index] = CC_DEFAULT_PRIVATE_DATA()
+			end
+			game.players[1].print("Player")
 			if player and type(player) ~= "number" and type(player) ~= "function" and player.valid then
+				game.players[1].print("Creating GUI")
 				createGUI(player)
 			end
 		end
@@ -153,9 +160,8 @@ function createGUI(player)
 	--Force all boxes to be full width
 	setWidths(player.gui.top.CCMaster, 0)
 
-
 	--CREATE ADD CATEGORY PAGE--
-[[--	
+--[[	
 	local addCategoryContainer = CCContainer.add{type="scroll-pane", name="addCategoryContainer", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical", caption="Add New Category"}
 	setStyles(addCategoryContainer, {
 		visible = false,
@@ -218,7 +224,6 @@ function createGUI(player)
 	--CREATE EDIT COMBINATOR OUTPUT GUI
 
 	--CREATE NEW COMBINATOR GUI--
-
 	player.gui.center.add{type="frame", name="CCNewCombinator", caption="Name this Control Combinator"}.style.visible = false
 	player.gui.center.CCNewCombinator.add{type="textfield", name="CCNCIndex"}.style.visible = false
 	player.gui.center.CCNewCombinator.add{type="textfield", name="CCNCField"}
