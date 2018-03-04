@@ -108,6 +108,33 @@ script.on_event(defines.events.on_gui_click, function(event)
 		element.parent.style.visible = false
 		element.parent.CCNCField.text = ""
 		element.parent.CCNCIndex.text = ""
+	elseif element.name == "CCEditCombinator" then
+		--Hide combinator list page
+		CCContainer.container.style.visible = false
+		--Show combinator edit page
+		CCContainer.editCombinatorContainer.style.visible = true
+	elseif element.name == "editCombinatorSaveButton" then
+		--Switch back to combinator list page
+		CCContainer.container.style.visible = true
+		CCContainer.editCombinatorContainer.style.visible = false
+		--Save the changes
+
+		--Clear the Edit Combinator Page
+
+	elseif element.name == "editCombinatorDiscardButton" then
+		--Switch back to combinator list page
+		CCContainer.container.style.visible = true
+		CCContainer.editCombinatorContainer.style.visible = false
+		--Clear the Edit Combinator Page
+
+	elseif element.name == "editCombinatorDestroyButton" then
+		--Switch back to combinator list page
+		CCContainer.container.style.visible = true
+		CCContainer.editCombinatorContainer.style.visible = false
+		--Destroy the combinator
+
+		--Clear the Edit Combinator Page
+		
 	end
 end)
 
@@ -198,7 +225,7 @@ function createGUI(player)
 	local ECCButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal"}
 	ECCButtonRow.add{type="button", name="editCombinatorSaveButton", caption="Save Changes"}
 	ECCButtonRow.add{type="button", name="editCombinatorCancelButton", caption="Discard Changes"}
-	ECCButtonRow.add{type="button", name="editCombinatorDeleteButton", caption="Destroy Combinator"}
+	ECCButtonRow.add{type="button", name="editCombinatorDestroyButton", caption="Destroy Combinator"}
 
 	--CREATE NEW COMBINATOR GUI--
 	player.gui.center.add{type="frame", name="CCNewCombinator", caption="Name this Control Combinator"}.style.visible = false
