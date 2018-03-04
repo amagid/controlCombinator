@@ -40,16 +40,11 @@ function CC_WINDOW_SETSTYLE(styleObject)
 end
 
 -- Create a new combinator reference with the given arguments
-function generateCombinatorReference(name, entity, signalId, strength, mode, duration) {
+function generateCombinatorReference(name, entity) {
 	return {
 				name = name                      -- A user-defined name for the combinator
 				entity = entity,                 -- A reference to the actual combinator entity
 				active = false,                  -- Is this combinator outputting a signal?
-				output = {
-					signalId = signalId          -- The type of the signal to output
-					strength = strength          -- The value of the signal to output
-					mode = mode                  -- The signal mode (toggle, duration)
-					duration = duration          -- Only matters for DURATION mode. The duration of the signal
-				}
+				output = nil
 			}
 }
