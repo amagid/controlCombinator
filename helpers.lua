@@ -79,3 +79,8 @@ function cleanBadCombinators(playerCCData)
 	end
 	playerCCData.combinators = newList
 end
+
+function clearEditCombinatorPage(page)
+	page.editCombinatorName.text = ""
+	page.editCombinatorDesc.text = ""
+end
