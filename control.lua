@@ -124,51 +124,26 @@ function createGUI(player)
 		font = "default-large-bold",
 		top_padding = CC_LABEL_PADDING
 	})
-	CCContainer.top.add{type="button", name="addCategory", caption="Add Category"}
-	CCContainer.top.add{type="button", name="addSignal", caption="Add Signal"}
 	local container = CCContainer.add{type="scroll-pane", name="container", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical"}
 	setStyles(container, {
 		visible = false,
 		minimal_height = CC_WINDOW_HEIGHT,
 		maximal_height = CC_WINDOW_HEIGHT
 	})
-	container.add{type="flow", name="privateCategories", direction="vertical"}
-	setStyles(container.privateCategories.add{type="label", caption="Available only to you"}, {
-		font = "default-large-bold",
-		top_padding = 30,
-		bottom_padding = 10
-	})
-	container.privateCategories.add{type="label", name="noCategoriesMessage", caption="You have no private categories."}
-	container.add{type="flow", name="publicCategories", direction="vertical"}
-	setStyles(container.publicCategories.add{type="label", caption="Available to your force"}, {
-		font = "default-large-bold",
-		top_padding = 30,
-		bottom_padding = 10
-	})
-	container.publicCategories.add{type="label", name="noCategoriesMessage", caption="You have no private categories."}
+	
+	container.add{type="label", name="noCombinatorsMessage", caption="You have no combinators yet. Build a combinator, and it will show up here."}
 
 	--POPULATE MAIN GUI WINDOW--
 
-	--If there are no categories in data, show message
-	if #global.ccdata[player.index].categories == 0 then
-		CCContainer.container.privateCategories.noCategoriesMessage.style.visible = true
+	--If there are no combinators in data, show message
+	if #global.ccdata[player.index].combinators == 0 then
+		CCContainer.container.noCombinatorsMessage.style.visible = true
 
-	--Otherwise, list out the categories
+	--Otherwise, list out the combinators
 	else
-		CCContainer.container.privateCategories.noCategoriesMessage.style.visible = false
-		for _, category in ipairs(global.ccdata[player.index].categories) do
-			addCategory(CCContainer.container.privateCategories, category)
-		end
-	end
-
-	--If there are no Force categories, show message
-	if #global.ccdata[player.force.name].categories == 0 then
-		CCContainer.container.publicCategories.noCategoriesMessage.style.visible = true
-	--Otherwise, list out the categories
-	else
-		CCContainer.container.publicCategories.noCategoriesMessage.style.visible = false
-		for _, category in ipairs(global.ccdata[player.index].categories) do
-			addCategory(CCContainer.container.publicCategories, category)
+		CCContainer.container.noCombinatorsMessage.style.visible = false
+		for _, combinator in ipairs(global.ccdata[player.index].combinators) do
+			addCombinator(CCContainer.container, combinator)
 		end
 	end
 
