@@ -85,6 +85,15 @@ script.on_event(defines.events.on_gui_click, function(event)
 		
 		cleanBadCombinators(global.ccdata[event.player_index])
 
+		--If there are no combinators in data, show message
+		if #global.ccdata[player.index].combinators == 0 then
+			CCContainer.container.noCombinatorsMessage.style.visible = true
+	
+		--Otherwise, list out the combinators
+		else
+			CCContainer.container.noCombinatorsMessage.style.visible = false
+		end
+
 		CCContainer.top.caption = "Control Combinators"
 		CCContainer.container.style.visible = true
 	--If this is the master CC GUI toggle button and the GUI is visible
