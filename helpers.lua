@@ -55,3 +55,15 @@ function addCombinator(container, combinator)
 	})
 	combinator.gui = guiReference
 end
+
+function cleanBadCombinators(playerCCData)
+	local newList = {}
+	for _, combinator in pairs(playerCCData.combinators) do
+		if combinator.entity.valid then
+			table.insert(newList, combinator)
+		elseif combinator.gui ~= nil then
+			combinator.gui.style.visible = false
+		end
+	end
+	playerCCData.combinators = newList
+end

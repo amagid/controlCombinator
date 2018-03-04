@@ -82,6 +82,8 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.container.style.visible = false
 		CCContainer.top.caption = "Loading..."
 		CCContainer.style.visible = true
+		
+		cleanBadCombinators(global.ccdata[event.player_index])
 
 		CCContainer.top.caption = "Control Combinators"
 		CCContainer.container.style.visible = true
