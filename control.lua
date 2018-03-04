@@ -121,7 +121,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 
 		--Clear the Edit Combinator Page
 
-	elseif element.name == "editCombinatorDiscardButton" then
+	elseif element.name == "editCombinatorCancelButton" then
 		--Switch back to combinator list page
 		CCContainer.container.style.visible = true
 		CCContainer.editCombinatorContainer.style.visible = false
@@ -134,7 +134,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 		--Destroy the combinator
 
 		--Clear the Edit Combinator Page
-		
+
 	end
 end)
 
