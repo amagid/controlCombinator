@@ -155,7 +155,7 @@ function createGUI(player)
 
 
 	--CREATE ADD CATEGORY PAGE--
-	
+[[--	
 	local addCategoryContainer = CCContainer.add{type="scroll-pane", name="addCategoryContainer", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical", caption="Add New Category"}
 	setStyles(addCategoryContainer, {
 		visible = false,
@@ -213,22 +213,9 @@ function createGUI(player)
 	ECCButtonRow.add{type="button", name="editCategorySaveButton", caption="Save Changes"}
 	ECCButtonRow.add{type="button", name="editCategoryCancelButton", caption="Discard Changes"}
 	ECCButtonRow.add{type="button", name="editCategoryDeleteButton", caption="Delete Category"}
+--]]
 
-	--CREATE CONFIRM DELETE CATEGORY BOX--
-
-
-
-	--CREATE ADD SIGNAL PAGE--
-	
-
-
-	--CREATE EDIT SIGNAL PAGE--
-
-
-
-	--CREATE CONFIRM DELETE SIGNAL BOX--
-
-	
+	--CREATE EDIT COMBINATOR OUTPUT GUI
 
 	--CREATE NEW COMBINATOR GUI--
 
@@ -237,56 +224,6 @@ function createGUI(player)
 	player.gui.center.CCNewCombinator.add{type="textfield", name="CCNCField"}
 	player.gui.center.CCNewCombinator.add{type="button", name="CCNCButton", caption="Set Name"}
 
-end
-
-function addCategory(container, category)
-	local categoryActive = false
-	local categoryFrame = container.add{type="frame", name=category.name, direction="vertical", tooltip=category.description}
-	categoryFrame.add{type="flow", name="top", direction="horizontal"}
-	categoryFrame.top.add{type="label", name="categoryLabel", caption=category.name}.style.font = "default-large-bold"
-	for _, signal in ipairs(category.signals) do
-		for _, output in ipairs(signal.outputs) do
-			if output.active then
-				categoryActive = true
-			end
-		end
-	end
-	if categoryActive then
-		categoryFrame.top.add{type="button", name="toggle", caption="Deactivate All"}
-		categoryFrame.top.categoryLabel.style.font_color = {r=0, g=1, b=0}
-	else
-		categoryFrame.top.add{type="button", name="toggle", caption="Activate All"}
-		categoryFrame.top.categoryLabel.style.font_color = {r=1, g=1, b=1}
-	end
-	categoryFrame.top.add{type="button", name="add", caption="Add Signal"}
-	categoryFrame.top.add{type="button", name="edit", caption="Edit Category"}
-	categoryFrame.top.add{type="button", name="delete", caption="Delete"}
-	
-	categoryFrame.add{type="label", name="noSignalsMessage", caption="This category has no signals."}
-
-	if #category.signals == 0 then
-		categoryFrame.noSignalsMessage.style.visible = true
-	else
-		categoryFrame.noSignalsMessage.style.visible = false
-		for _, signal in ipairs(category.signals) do
-			local signalActive = false
-			local signalFrame = categoryFrame.add{type="frame", name=signal.name, caption=signal.name, direction="horizontal"}
-			for _, output in ipairs(signal.outputs) do
-				if output.active then
-					signalActive = true
-				end
-			end
-			if signalActive then
-				signalFrame.style.font_color = {r=0, g=1, b=0}
-				signalFrame.add{type="button", name="toggle", caption="Deactivate"}
-			else
-				signalFrame.style.font_color = {r=1, g=1, b=1}
-				signalFrame.add{type="button", name="toggle", caption="Activate"}
-			end
-			signalFrame.add{type="button", name="more", caption="More"}
-			signalFrame.add{type="button", name="delete", caption="Delete"}
-		end
-	end
 end
 
 script.on_event(defines.events.on_built_entity, function(event)
