@@ -48,11 +48,23 @@ function generateCombinatorReference(name, entity)
 end
 
 function addCombinator(container, combinator)
-	local guiReference = container.add{type="label", caption=combinator.name}
+	local guiReference = container.add{type="frame", name=combinator.name, direction="vertical"}
 	setStyles(guiReference, {
-		top_padding = 30,
+		minimal_width = CC_WINDOW_WIDTH,
+		maximal_width = CC_WINDOW_WIDTH
+	})
+	setStyles(guiReference.add{type="label", caption=combinator.name}, {
+		top_padding = 25,
 		font = "default-large-bold"
 	})
+	local buttonRow = guiReference.add{type="flow", name="buttonRow", direction="horizontal"}
+	setStyles(buttonRow, {
+		minimal_width = CC_WINDOW_WIDTH,
+		maximal_width = CC_WINDOW_WIDTH
+	})
+	buttonRow.add{type="button", name="CCEditCombinator", caption="Edit"}
+	buttonRow.add{type="button", name="CCCombinatorButton", caption="Activate"}
+	
 	combinator.gui = guiReference
 end
 
