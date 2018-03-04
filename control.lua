@@ -171,68 +171,34 @@ function createGUI(player)
 	--Force all boxes to be full width
 	setWidths(player.gui.top.CCMaster, 0)
 
-	--CREATE ADD CATEGORY PAGE--
---[[	
-	local addCategoryContainer = CCContainer.add{type="scroll-pane", name="addCategoryContainer", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical", caption="Add New Category"}
-	setStyles(addCategoryContainer, {
-		visible = false,
-		minimal_height = CC_WINDOW_HEIGHT,
-		maximal_height = CC_WINDOW_HEIGHT
-	})
-	setStyles(addCategoryContainer.add{type="label", caption="Category name"}, {
-		top_padding = 30,
-		font = "default-large-bold"
-	})
-	addCategoryContainer.add{type="textfield", name="newCategoryName"}
-	setStyles(addCategoryContainer.add{type="label", caption="Category description"}, {
-		top_padding = 30,
-		font = "default-large-bold"
-	})
-	setStyles(addCategoryContainer.add{type="textfield", name="newCategoryDesc"}, {
-		minimal_width=400,
-		maximal_width=400
-	})
-	setStyles(addCategoryContainer.add{type="checkbox", name="newCategoryPublic", state=false, caption="Make Category public", tooltip="Checking this box will open your Category to everyone in your Force. Any of them will be able to use, edit or delete this Category. It will also be listed in the main menu under \"Available to your force\" instead of \"Available only to you\"."}, {
-		top_padding = 30,
-		bottom_padding = 30
-	})
-	addCategoryContainer.add{type="button", name="newCategoryButton", caption="Create Category"}
-	
-	--CREATE EDIT CATEGORY PAGE--
+	--CREATE EDIT COMBINATOR PAGE--
 
-	local editCategoryContainer = CCContainer.add{type="scroll-pane", name="editCategoryContainer", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical", caption="Edit Category"}
+	local editCombinatorContainer = CCContainer.add{type="scroll-pane", name="editCombinatorContainer", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical", caption="Edit Combinator"}
 
-	setStyles(editCategoryContainer, {
+	setStyles(editCombinatorContainer, {
 		visible = false,
 		minimal_height = CC_WINDOW_HEIGHT,
 		maximal_height = CC_WINDOW_HEIGHT
 	})
 
-	setStyles(editCategoryContainer.add{type="label", caption="Category name"}, {
+	setStyles(editCombinatorContainer.add{type="label", caption="Combinator Name"}, {
 		top_padding = 30,
 		font = "default-large-bold"
 	})
-	editCategoryContainer.add{type="textfield", name="editCategoryName"}
-	setStyles(editCategoryContainer.add{type="label", caption="Category description"}, {
+	editCombinatorContainer.add{type="textfield", name="editCombinatorName"}
+	setStyles(editCombinatorContainer.add{type="label", caption="Combinator Description"}, {
 		top_padding = 30,
 		font = "default-large-bold"
 	})
-	setStyles(editCategoryContainer.add{type="textfield", name="editCategoryDesc"}, {
+	setStyles(editCombinatorContainer.add{type="textfield", name="editCombinatorDesc"}, {
 		minimal_width=400,
 		maximal_width=400
 	})
-	setStyles(editCategoryContainer.add{type="checkbox", name="editCategoryPublic", state=false, caption="Make Category public", tooltip="Checking this box will open your Category to everyone in your Force. Any of them will be able to use, edit or delete this Category. It will also be listed in the main menu under \"Available to your force\" instead of \"Available only to you\"."}, {
-		top_padding = 30,
-		bottom_padding = 30
-	})
 
-	local ECCButtonRow = editCategoryContainer.add{type="flow", direction="horizontal"}
-	ECCButtonRow.add{type="button", name="editCategorySaveButton", caption="Save Changes"}
-	ECCButtonRow.add{type="button", name="editCategoryCancelButton", caption="Discard Changes"}
-	ECCButtonRow.add{type="button", name="editCategoryDeleteButton", caption="Delete Category"}
---]]
-
-	--CREATE EDIT COMBINATOR OUTPUT GUI
+	local ECCButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal"}
+	ECCButtonRow.add{type="button", name="editCombinatorSaveButton", caption="Save Changes"}
+	ECCButtonRow.add{type="button", name="editCombinatorCancelButton", caption="Discard Changes"}
+	ECCButtonRow.add{type="button", name="editCombinatorDeleteButton", caption="Destroy Combinator"}
 
 	--CREATE NEW COMBINATOR GUI--
 	player.gui.center.add{type="frame", name="CCNewCombinator", caption="Name this Control Combinator"}.style.visible = false
