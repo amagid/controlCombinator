@@ -116,6 +116,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, element.parent.parent.name)
 		--Populate the combinator edit page fields
 		CCContainer.editCombinatorContainer.editCombinatorName.text = combinator.name
+		CCContainer.editCombinatorContainer.combinatorName.text = combinator.name
 		CCContainer.editCombinatorContainer.editCombinatorDesc.text = combinator.description
 
 		--Show combinator edit page
@@ -125,7 +126,9 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.container.style.visible = true
 		CCContainer.editCombinatorContainer.style.visible = false
 		--Save the changes
-
+		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, CCContainer.editCombinatorContainer.combinatorName.text)
+		combinator.name = CCContainer.editCombinatorContainer.editCombinatorName.text
+		combinator.description = CCContainer.editCombinatorContainer.editCombinatorDesc.text
 		--Clear the Edit Combinator Page
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
 	elseif element.name == "editCombinatorCancelButton" then
@@ -139,9 +142,13 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.container.style.visible = true
 		CCContainer.editCombinatorContainer.style.visible = false
 		--Destroy the combinator
-
+		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, CCContainer.editCombinatorContainer.combinatorName.text)
+		combinator.entity.force = "enemy"
+		combinator.entity.die()
 		--Clear the Edit Combinator Page
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
+		--Clean the combinator list
+		cleanBadCombinators(global.ccdata[event.player_index])
 	end
 end)
 
@@ -227,6 +234,9 @@ function createGUI(player)
 	setStyles(editCombinatorContainer.add{type="textfield", name="editCombinatorDesc"}, {
 		minimal_width=400,
 		maximal_width=400
+	})
+	setStyles(editCombinatorContainer.add{type="label", name="combinatorName"}, {
+		visible = false
 	})
 
 	local ECCButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal"}
