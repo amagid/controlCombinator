@@ -111,6 +111,13 @@ script.on_event(defines.events.on_gui_click, function(event)
 	elseif element.name == "CCEditCombinator" then
 		--Hide combinator list page
 		CCContainer.container.style.visible = false
+
+		--Get the combinator data entry
+		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, element.parent.parent.name)
+		--Populate the combinator edit page fields
+		CCContainer.editCombinatorContainer.editCombinatorName.text = combinator.name
+		CCContainer.editCombinatorContainer.editCombinatorDesc.text = combinator.description
+
 		--Show combinator edit page
 		CCContainer.editCombinatorContainer.style.visible = true
 	elseif element.name == "editCombinatorSaveButton" then
