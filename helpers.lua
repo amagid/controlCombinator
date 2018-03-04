@@ -31,17 +31,6 @@ function setWidths(guiElement, layer)
 	end
 end
 
-function isCCGUIElement(guiElement)
-	local flag = false
-	while guiElement.parent do
-		if guiElement.name == "CCMaster" then
-			flag = true
-		end
-		guiElement = guiElement.parent
-	end
-	return flag
-end
-
 --Set all padding and maximum sizes
 function CC_WINDOW_SETSTYLE(styleObject)
 	styleObject.top_padding = CC_WINDOW_PADDING
