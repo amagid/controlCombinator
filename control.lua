@@ -239,6 +239,12 @@ function createGUI(player)
 		visible = false
 	})
 
+	local signalButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal", name="signalButtonRow"}
+
+	for i=1, 10, 1 do
+		signalButtonRow.add{type="sprite-button", sprite=CC_SIGNAL_ICON(i), name="CCSignalButton" .. i}
+	end
+
 	local ECCButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal"}
 	ECCButtonRow.add{type="button", name="editCombinatorSaveButton", caption="Save Changes"}
 	ECCButtonRow.add{type="button", name="editCombinatorCancelButton", caption="Discard Changes"}
