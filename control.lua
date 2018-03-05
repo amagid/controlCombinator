@@ -1,7 +1,7 @@
 require "util"
 require("config.constants")
 require("helpers")
-require("style")
+require("prototypes.style")
 
 script.on_init(function()
 	--[[
@@ -233,17 +233,27 @@ function createGUI(player)
 		font = "default-large-bold"
 	})
 	setStyles(editCombinatorContainer.add{type="text-box", name="editCombinatorDesc"}, {
-		minimal_width=400,
-		maximal_width=400
+		minimal_width=CC_WINDOW_WIDTH,
+		maximal_width=CC_WINDOW_WIDTH
 	})
 	setStyles(editCombinatorContainer.add{type="textfield", name="combinatorName"}, {
 		visible = false
 	})
 
+	setStyles(editCombinatorContainer.add{type="label", caption="Output Signal"}, {
+		top_padding = 30,
+		font = "default-large-bold"
+	})
+
 	local signalButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal", name="signalButtonRow"}
 
 	for i=1, 10, 1 do
-		signalButtonRow.add{type="button", name="CCSignalButton" .. i, style="cc_signal_button_" .. i .. "_style"}
+		setStyles(signalButtonRow.add{type="sprite-button", name="CCSignalButton" .. i, sprite="item/" .. CC_SIGNAL_NAME(i)}, {
+			minimal_width = 40,
+			minimal_height = 40,
+			maximal_width = 40,
+			maximal_height = 40
+		})
 	end
 
 	setStyles(editCombinatorContainer.add{type="label", caption="Signal Amount"}, {
