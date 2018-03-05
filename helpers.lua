@@ -84,6 +84,19 @@ end
 function clearEditCombinatorPage(page)
 	page.editCombinatorName.text = ""
 	page.editCombinatorDesc.text = ""
+	page.combinatorName.text = ""
+	for i = 1, 10, 1 do
+		setStyles(page.signalButtonRow["CCSignalButton" .. i], {
+			minimal_width = 40,
+			minimal_height = 40,
+			maximal_width = 40,
+			maximal_height = 40
+		})
+	end
+	page.CCSelectedSignal.text = ""
+	page.editCombinatorAmount.text = ""
+	page.typeButtonRow.CCToggleMode.state = false
+	page.typeButtonRow.CCDurationMode.state = false
 end
 
 function findCombinatorByName(combinatorList, name)

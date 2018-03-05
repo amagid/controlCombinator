@@ -293,7 +293,7 @@ function createGUI(player)
 	local typeButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal", name="typeButtonRow"}
 
 	typeButtonRow.add{type="radiobutton", state=true, name="CCToggleMode", caption="Toggle Mode", tooltip="When in this mode, a Control Combinator must be manually turned on and off from the GUI."}
-	typeButtonRow.add{type="radiobutton", state=false, name="CCPulseMode", caption="Duration Mode", tooltip="When in this mode, a Control Combinator will automatically turn off after the specified amount of time."}
+	typeButtonRow.add{type="radiobutton", state=false, name="CCDurationMode", caption="Duration Mode", tooltip="When in this mode, a Control Combinator will automatically turn off after the specified amount of time."}
 
 	local ECCButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal"}
 	ECCButtonRow.add{type="button", name="editCombinatorSaveButton", caption="Save Changes"}
