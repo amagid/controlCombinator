@@ -1,6 +1,6 @@
 require("config.constants")
 
-require("prototypes.style")
+require("style")
 
 require("prototypes.technology")
 require("prototypes.item")
