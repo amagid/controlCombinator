@@ -167,6 +167,8 @@ script.on_event(defines.events.on_gui_click, function(event)
 			maximal_width = 80,
 			maximal_height = 80
 		})
+
+		editCombinatorContainer.CCSelectedSignal.text = string.sub(element.name, -1)
 	end
 end)
 
@@ -260,6 +262,10 @@ function createGUI(player)
 	setStyles(editCombinatorContainer.add{type="label", caption="Output Signal"}, {
 		top_padding = 30,
 		font = "default-large-bold"
+	})
+
+	setStyles(editCombinatorContainer.add{type="textfield", name="CCSelectedSignal"}, {
+		visible = false
 	})
 
 	local signalButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal", name="signalButtonRow"}
