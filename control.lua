@@ -208,7 +208,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 			maximal_height = 80
 		})
 
-		editCombinatorContainer.CCSelectedSignal.text = string.sub(element.name, -1)
+		CCContainer.editCombinatorContainer.CCSelectedSignal.text = string.sub(element.name, -1)
 	elseif element.name == "CCToggleMode" or element.name == "CCDurationMode" then
 		element.parent.CCToggleMode.state = false
 		element.parent.CCDurationMode.state = false
