@@ -120,6 +120,39 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.editCombinatorContainer.combinatorName.text = combinator.name
 		CCContainer.editCombinatorContainer.editCombinatorDesc.text = combinator.description
 
+		if combinator.output then
+			if combinator.output.signalNum then
+				setStyles(page.signalButtonRow["CCSignalButton" .. combinator.output.signalNum], {
+					minimal_width = 80,
+					minimal_height = 80,
+					maximal_width = 80,
+					maximal_height = 80
+				})
+			end
+			
+			CCContainer.editCombinatorContainer.CCSelectedSignal.text = combinator.output.signalNum
+			CCContainer.editCombinatorContainer.editCombinatorAmount.text = combinator.output.amount
+			CCContainer.editCombinatorContainer.typeButtonRow.CCToggleMode.state = (combinator.output.type == "toggle")
+			CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state = (combinator.output.type == "duration")
+		else
+			combinator.output = {
+				signalNum = 1,
+				amount = 1,
+				type == "toggle"
+			}
+			
+			setStyles(page.signalButtonRow["CCSignalButton" .. combinator.output.signalNum], {
+				minimal_width = 80,
+				minimal_height = 80,
+				maximal_width = 80,
+				maximal_height = 80
+			})
+		
+			CCContainer.editCombinatorContainer.CCSelectedSignal.text = combinator.output.signalNum
+			CCContainer.editCombinatorContainer.editCombinatorAmount.text = combinator.output.amount
+			CCContainer.editCombinatorContainer.typeButtonRow.CCToggleMode.state = (combinator.output.type == "toggle")
+			CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state = (combinator.output.type == "duration")
+		end
 		--Show combinator edit page
 		CCContainer.editCombinatorContainer.style.visible = true
 	elseif element.name == "editCombinatorSaveButton" then
@@ -130,6 +163,9 @@ script.on_event(defines.events.on_gui_click, function(event)
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, CCContainer.editCombinatorContainer.combinatorName.text)
 		combinator.name = CCContainer.editCombinatorContainer.editCombinatorName.text
 		combinator.description = CCContainer.editCombinatorContainer.editCombinatorDesc.text
+		combinator.output.signalNum = CCContainer.editCombinatorContainer.CCSelectedSignal.text
+		combinator.output.amount = CCContainer.editCombinatorContainer.editCombinatorAmount.text
+		combinator.output.type = (CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state) ? "duration" : "toggle"
 		--Clear the Edit Combinator Page
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
 	elseif element.name == "editCombinatorCancelButton" then
