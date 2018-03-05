@@ -1,6 +1,7 @@
 require "util"
 require("config.constants")
 require("helpers")
+require("prototypes.style")
 
 script.on_init(function()
 	--[[
@@ -242,7 +243,7 @@ function createGUI(player)
 	local signalButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal", name="signalButtonRow"}
 
 	for i=1, 10, 1 do
-		signalButtonRow.add{type="sprite-button", sprite=CC_SIGNAL_ICON(i), name="CCSignalButton" .. i}
+		signalButtonRow.add{type="button", name="CCSignalButton" .. i, style="cc_signal_button_" .. i .. "_style"}
 	end
 
 	setStyles(editCombinatorContainer.add{type="label", caption="Signal Amount"}, {
