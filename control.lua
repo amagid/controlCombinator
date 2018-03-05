@@ -141,7 +141,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 				type == "toggle"
 			}
 			
-			setStyles(page.signalButtonRow["CCSignalButton" .. combinator.output.signalNum], {
+			setStyles(CCContainer.editCombinatorContainer.signalButtonRow["CCSignalButton" .. combinator.output.signalNum], {
 				minimal_width = 80,
 				minimal_height = 80,
 				maximal_width = 80,
