@@ -165,7 +165,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 		combinator.description = CCContainer.editCombinatorContainer.editCombinatorDesc.text
 		combinator.output.signalNum = CCContainer.editCombinatorContainer.CCSelectedSignal.text
 		combinator.output.amount = CCContainer.editCombinatorContainer.editCombinatorAmount.text
-		combinator.output.type = (CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state) ? "duration" : "toggle"
+		if CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state then
+			combinator.output.type = "duration"
+		else
+			combinator.output.type = "toggle"
+		end
 		--Clear the Edit Combinator Page
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
 	elseif element.name == "editCombinatorCancelButton" then
@@ -205,6 +209,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 		})
 
 		editCombinatorContainer.CCSelectedSignal.text = string.sub(element.name, -1)
+	elseif element.name == "CCToggleMode" or element.name == "CCDurationMode" then
+		element.parent.CCToggleMode.state = false
+		element.parent.CCDurationMode.state = false
+		element.state = true
 	end
 end)
 
