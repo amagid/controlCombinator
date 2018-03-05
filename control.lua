@@ -150,6 +150,23 @@ script.on_event(defines.events.on_gui_click, function(event)
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
 		--Clean the combinator list
 		cleanBadCombinators(global.ccdata[event.player_index])
+	elseif string.find(element.name, "CCSignalButton") then
+		--Deselect all of the buttons
+		for i = 1, 10, 1 do
+			setStyles(element.parent["CCSignalButton" .. i], {
+				minimal_width = 40,
+				minimal_height = 40,
+				maximal_width = 40,
+				maximal_height = 40
+			})
+		end
+		--Select this button
+		setStyles(element, {
+			minimal_width = 80,
+			minimal_height = 80,
+			maximal_width = 80,
+			maximal_height = 80
+		})
 	end
 end)
 
