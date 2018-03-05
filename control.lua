@@ -1,7 +1,7 @@
 require "util"
 require("config.constants")
 require("helpers")
-require("prototypes.style")
+require("style")
 
 script.on_init(function()
 	--[[
