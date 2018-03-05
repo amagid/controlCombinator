@@ -231,11 +231,11 @@ function createGUI(player)
 		top_padding = 30,
 		font = "default-large-bold"
 	})
-	setStyles(editCombinatorContainer.add{type="textfield", name="editCombinatorDesc"}, {
+	setStyles(editCombinatorContainer.add{type="text-box", name="editCombinatorDesc"}, {
 		minimal_width=400,
 		maximal_width=400
 	})
-	setStyles(editCombinatorContainer.add{type="label", name="combinatorName"}, {
+	setStyles(editCombinatorContainer.add{type="textfield", name="combinatorName"}, {
 		visible = false
 	})
 
