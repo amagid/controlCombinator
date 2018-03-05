@@ -7,7 +7,7 @@ CC_ICON_PATH = "__ControlCombinator__/graphics/control_combinator_icon.png"
 CC_ENTITY_PATH = "__ControlCombinator__/graphics/control_combinator_entities.png"
 
 function CC_SIGNAL_ICON(number)
-	return "__ControlCombinator__/graphics/signal_icon_" .. number .. ".png"
+	return "__ControlCombinator__/graphics/control_combinator_signal_" .. number .. ".png"
 end
 
 function CC_SIGNAL_NAME(number)
