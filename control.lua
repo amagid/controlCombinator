@@ -3,6 +3,24 @@ require("config.constants")
 require("helpers")
 require("prototypes.style")
 
+--[[
+
+FOR DURATION MODE:
+
+Best idea I can think of for efficient implementation follows:
+
+1) Maintain a global linked list of combinators that are currently active and in "duration" mode. This list will include combinators for all players.
+2) When a combinator in "duration" mode is activated, place it in the list in order of deactivation time so the list is always sorted.
+3) Set the combinator's "additional time" with the number of ticks it should wait to deactivate after the one before it deactivates.
+4) Each tick, decrement a tick counter.
+5) When the counter reaches zero, pop the first combinator off of the list, deactivate it, and set the tick counter equal to the
+   "additional time" of the next combinator in the list.
+6) This setup lends itself easily to "pulse" mode, the only needed change is to put combinators back into the list immediately after popping them
+   and store a boolean saying whether the next action is to activate or deactivate them. You'll also definitely need to check,
+   when popping combinators from the list, whether the next one should also be popped in this tick since it's possible that some may coincide.
+
+]]
+
 script.on_init(function()
 	--[[
 		Table to store all control combinator data, indexed by owning player for private CCs or force name for public CCs.
