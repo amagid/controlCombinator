@@ -49,6 +49,18 @@ function generateCombinatorReference(name, entity)
 end
 
 function addCombinator(container, combinator)
+	--If the name is already taken, add a bit to it so we don't get an error.
+	local originalName = combinator.name
+	local attempt = 1
+	if CCContainer.container[combinator.name] then
+		combinator.name = originalName .. " (" .. attempt .. ")"
+	end
+	--Increase suffix number until the combinator entry is unique
+	while CCContainer.container[combinator.name] then
+		attempt = attempt + 1
+		combinator.name = originalName .. " (" .. attempt .. ")"
+	end
+
 	local guiReference = container.add{type="frame", name=combinator.name, direction="vertical"}
 	setStyles(guiReference, {
 		minimal_width = CC_WINDOW_WIDTH,

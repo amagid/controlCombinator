@@ -172,11 +172,6 @@ script.on_event(defines.events.on_gui_click, function(event)
 		else
 			combinator.output.type = "toggle"
 		end
-
-		--If the name is already taken, add a bit to it so we don't get an error.
-		if CCContainer.container[combinator.name] then
-			combinator.name = combinator.name .. " (1)"
-		end
 		addCombinator(CCContainer.container, combinator)
 		--Clear the Edit Combinator Page
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
