@@ -54,7 +54,7 @@ function addCombinator(container, combinator)
 		minimal_width = CC_WINDOW_WIDTH,
 		maximal_width = CC_WINDOW_WIDTH
 	})
-	setStyles(guiReference.add{type="label", caption=combinator.name}, {
+	setStyles(guiReference.add{type="label", caption=combinator.name, name="combinatorName"}, {
 		top_padding = 25,
 		font = "default-large-bold"
 	})
