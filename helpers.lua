@@ -44,7 +44,12 @@ function generateCombinatorReference(name, entity)
 				entity = entity,                 -- A reference to the actual combinator entity
 				gui = nil,                       -- A reference to the gui element representing this combinator
 				active = false,                  -- Is this combinator outputting a signal?
-				output = nil
+				output = {
+					signalNum = 1,
+					amount = 1,
+					type = "toggle",
+					duration = 0
+				}
 			}
 end
 

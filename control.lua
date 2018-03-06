@@ -242,12 +242,16 @@ script.on_event(defines.events.on_gui_click, function(event)
 	end
 end)
 
-script.on_marked_for_deconstruction(function(event)
-	event.entity.get_inventory(defines.inventory.chest).clear()
+script.on_event(defines.events.on_marked_for_deconstruction, function(event)
+	if event.entity.name == CC_NAME then
+		event.entity.get_inventory(defines.inventory.chest).clear()
+	end
 end)
 
-script.on_pre_player_mined_item(function(event)
-	event.entity.get_inventory(defines.inventory.chest).clear()
+script.on_event(defines.events.on_preplayer_mined_item, function(event)
+	if event.entity.name == CC_NAME then
+		event.entity.get_inventory(defines.inventory.chest).clear()
+	end
 end)
 
 function createGUI(player)
