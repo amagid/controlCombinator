@@ -11,7 +11,7 @@ data:extend({
 		close_sound = { filename = "__base__/sound/metallic-chest-close.ogg", volume = 0.7 },
 		collision_box = {{-0.35, -0.35}, {0.35, 0.35}},
 		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
-		inventory_size = 1024,
+		inventory_size = 1,
 		vehicle_impact_sound =	{ filename = "__base__/sound/car-metal-impact.ogg", volume = 0.65 },
 		energy_source =
 		{
