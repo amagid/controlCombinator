@@ -138,7 +138,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 			combinator.output = {
 				signalNum = 1,
 				amount = 1,
-				type == "toggle"
+				type = "toggle"
 			}
 			
 			setStyles(CCContainer.editCombinatorContainer.signalButtonRow["CCSignalButton" .. combinator.output.signalNum], {
