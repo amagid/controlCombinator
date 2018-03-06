@@ -56,7 +56,7 @@ function addCombinator(container, combinator)
 		combinator.name = originalName .. " (" .. attempt .. ")"
 	end
 	--Increase suffix number until the combinator entry is unique
-	while CCContainer.container[combinator.name] then
+	while CCContainer.container[combinator.name] do
 		attempt = attempt + 1
 		combinator.name = originalName .. " (" .. attempt .. ")"
 	end
