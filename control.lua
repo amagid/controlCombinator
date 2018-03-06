@@ -159,8 +159,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 		--Switch back to combinator list page
 		CCContainer.container.style.visible = true
 		CCContainer.editCombinatorContainer.style.visible = false
+		local changedName = (CCContainer.editCombinatorContainer.combinatorName.text ~= CCContainer.editCombinatorContainer.editCombinatorName.text)
 		--Update the GUI entry
-		CCContainer.container[CCContainer.editCombinatorContainer.combinatorName.text].destroy()
+		if changedName then
+			CCContainer.container[CCContainer.editCombinatorContainer.combinatorName.text].destroy()
+		end
 		--Save the changes
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, CCContainer.editCombinatorContainer.combinatorName.text)
 		combinator.name = CCContainer.editCombinatorContainer.editCombinatorName.text
@@ -172,7 +175,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 		else
 			combinator.output.type = "toggle"
 		end
-		addCombinator(CCContainer.container, combinator)
+
+		if changedName then
+			addCombinator(CCContainer.container, combinator)
+		end
 		--Clear the Edit Combinator Page
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
 	elseif element.name == "editCombinatorCancelButton" then
