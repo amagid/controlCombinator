@@ -299,7 +299,7 @@ function createGUI(player)
 		top_padding = 30,
 		font = "default-large-bold"
 	})
-	editCombinatorContainer.add{type="textfield", name="editCombinatorName"}
+	editCombinatorContainer.add{type="textfield", name="editCombinatorName", tooltip="FYI: Editing the Control Combinator's name will move the Combinator's entry to the bottom of your list"}
 	setStyles(editCombinatorContainer.add{type="label", caption="Combinator Description"}, {
 		top_padding = 30,
 		font = "default-large-bold"
