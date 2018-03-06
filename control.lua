@@ -224,7 +224,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 		element.state = true
 	elseif element.name == "CCCombinatorButton" then
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, element.parent.parent.name)
-		local inventory = combinator.entity.get_inventory()
+		local inventory = combinator.entity.get_inventory(defines.inventory.chest)
 		inventory.clear()
 		if combinator.active then
 			element.caption = "Activate"
