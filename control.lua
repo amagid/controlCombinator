@@ -13,10 +13,12 @@ script.on_init(function()
 					{
 						name = ""
 						entity = *Control Combinator Entity Reference*,
+						active                    -- Is the combinator currently active
+						gui                       -- A reference to the GUI element for this combinator
 						output = {
-							signal_id             -- The type of the signal to output
-							strength              -- The value of the signal to output
-							mode                  -- The signal mode (toggle, duration)
+							signalNum             -- The color number of the signal to output
+							amount                -- The value of the signal to output
+							type                  -- The signal mode (toggle, duration)
 							duration              -- Only matters for DURATION mode. The duration of the signal
 						}
 					}
@@ -238,6 +240,14 @@ script.on_event(defines.events.on_gui_click, function(event)
 			combinator.active = true
 		end
 	end
+end)
+
+script.on_marked_for_deconstruction(function(event)
+	event.entity.get_inventory(defines.inventory.chest).clear()
+end)
+
+script.on_pre_player_mined_item(function(event)
+	event.entity.get_inventory(defines.inventory.chest).clear()
 end)
 
 function createGUI(player)
