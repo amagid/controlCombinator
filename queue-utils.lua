@@ -101,7 +101,7 @@ function removeCombinatorFromQueue(queue, combinator)
     --Store the current element
     local element = queue.first
     --Find our combinator in the list
-    while element.next ~= nil && element.next.combinator ~= combinator do
+    while element.next ~= nil and element.next.combinator ~= combinator do
         element = element.next
     end
     --If we found our combinator
