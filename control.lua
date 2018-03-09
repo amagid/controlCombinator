@@ -94,6 +94,7 @@ end
 function activateCombinator(combinator)
 	if combinator ~= nil then
 		combinator.active = true
+		combinator.entity.get_inventory(defines.inventory.chest).clear()
 		combinator.entity.get_inventory(defines.inventory.chest).insert({
 			name = CC_SIGNAL_NAME(combinator.output.signalNum),
 			count = combinator.output.amount
@@ -277,18 +278,13 @@ script.on_event(defines.events.on_gui_click, function(event)
 		element.state = true
 	elseif element.name == "CCCombinatorButton" then
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, element.parent.parent.name)
-		local inventory = combinator.entity.get_inventory(defines.inventory.chest)
-		inventory.clear()
 		if combinator.active then
-			element.caption = "Activate"
-			combinator.active = false
+			if combinator.output.type == "duration" then
+				removeFromQueue(combinator)
+			end
+			deactivateCombinator(combinator)
 		else
-			inventory.insert({
-				name = CC_SIGNAL_NAME(combinator.output.signalNum),
-				count = combinator.output.amount
-			})
-			element.caption = "Deactivate"
-			combinator.active = true
+			activateCombinator(combinator)
 		end
 	end
 end)
