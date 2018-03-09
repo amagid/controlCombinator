@@ -33,7 +33,7 @@ function addElementToQueue(queue, elem)
             elem.additionalTime = elem.combinator.output.duration - queue.popCounter
             local element = queue.first
             --While our new element has more additional time than the next element in the queue
-            while element.next ~= nil and element.next.additionalTime > elem.additionalTime
+            while element.next ~= nil and element.next.additionalTime > elem.additionalTime do
                 elem.additionalTime = elem.additionalTime - element.next.additionalTime
             end
 
