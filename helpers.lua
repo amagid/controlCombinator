@@ -114,6 +114,8 @@ function clearEditCombinatorPage(page)
 	page.editCombinatorAmount.text = ""
 	page.typeButtonRow.CCToggleMode.state = false
 	page.typeButtonRow.CCDurationMode.state = false
+	page.durationRow.editCombinatorDuration.text = ""
+	page.durationRow.style.visible = false
 end
 
 function findCombinatorByName(combinatorList, name)
