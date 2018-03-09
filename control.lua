@@ -77,13 +77,15 @@ script.on_event(defines.events.on_player_created, function(event)
 end)
 
 script.on_event(defines.events.on_tick, function(event)
-	--If the popCounter has not yet reached 0
-	if global.ccdata.durationQueue.popCounter > 0 then
-		--Decrement the popCounter
-		global.ccdata.durationQueue.popCounter = global.ccdata.durationQueue.popCounter - 1
-	elseif global.ccdata.durationQueue.length > 0 then
-		deactivateCombinator(popCombinatorFromQueue(global.ccdata.durationQueue))
-		activateCombinator(peekAtQueue(global.ccdata.durationQueue))
+	if global.ccdata ~= nil and global.ccdata.durationQueue ~= nil then
+		--If the popCounter has not yet reached 0
+		if global.ccdata.durationQueue.popCounter > 0 then
+			--Decrement the popCounter
+			global.ccdata.durationQueue.popCounter = global.ccdata.durationQueue.popCounter - 1
+		elseif global.ccdata.durationQueue.length > 0 then
+			deactivateCombinator(popCombinatorFromQueue(global.ccdata.durationQueue))
+			activateCombinator(peekAtQueue(global.ccdata.durationQueue))
+		end
 	end
 end)
 
