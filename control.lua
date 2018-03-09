@@ -46,21 +46,23 @@ script.on_init(function()
 		}
 	--]]
 	-- Make sure our data storage is initialized, but don't reinitialize if a new player is entering
+	ensureCCDataInitialized()
+end)
+
+function ensureCCDataInitialized() {
 	if not global.ccdata then
 		global.ccdata = {
 			durationQueue = createQueue()
 		}
+	elseif not global.ccdata.durationQueue then
+		global.ccdata.durationQueue = createQueue()
 	end
-end)
+}
 
 -- Initialize the new player's Control Combinator list
 script.on_event(defines.events.on_player_created, function(event)
 	-- Initialize global CCData if not yet initialized
-	if not global.ccdata then
-		global.ccdata = {
-			durationQueue = createQueue()
-		}
-	end
+	ensureCCDataInitialized()
 
 	-- Store the player to improve efficiency
 	local player = game.players[event.player_index]
@@ -74,7 +76,7 @@ script.on_event(defines.events.on_player_created, function(event)
 	end
 end)
 
-script.on_tick(function(event)
+script.on_event(defines.events.on_tick, function(event)
 	--If the popCounter has not yet reached 0
 	if global.ccdata.durationQueue.popCounter > 0 then
 		--Decrement the popCounter
@@ -107,6 +109,7 @@ end
 script.on_event(defines.events.on_research_finished, function(event)
 	game.players[1].print("Researched a tech: " .. event.research.name)
 	if event.research.name == CC_NAME then
+		ensureCCDataInitialized()
 		game.players[1].print("It's our tech!")
 		for _, player in pairs(event.research.force.players) do
 			if global.ccdata[player.index] == nil then
