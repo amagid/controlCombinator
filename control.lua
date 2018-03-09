@@ -2,6 +2,7 @@ require "util"
 require("config.constants")
 require("helpers")
 require("prototypes.style")
+require("queue-utils")
 
 --[[
 
@@ -46,7 +47,9 @@ script.on_init(function()
 	--]]
 	-- Make sure our data storage is initialized, but don't reinitialize if a new player is entering
 	if not global.ccdata then
-		global.ccdata = {}
+		global.ccdata = {
+			durationQueue = createQueue()
+		}
 	end
 end)
 
@@ -54,7 +57,9 @@ end)
 script.on_event(defines.events.on_player_created, function(event)
 	-- Initialize global CCData if not yet initialized
 	if not global.ccdata then
-		global.ccdata = {}
+		global.ccdata = {
+			durationQueue = createQueue()
+		}
 	end
 
 	-- Store the player to improve efficiency
@@ -68,6 +73,34 @@ script.on_event(defines.events.on_player_created, function(event)
 		createGUI(player)
 	end
 end)
+
+script.on_tick(function(event)
+	--If the popCounter has not yet reached 0
+	if global.ccdata.durationQueue.popCounter > 0 then
+		--Decrement the popCounter
+		global.ccdata.durationQueue.popCounter = global.ccdata.durationQueue.popCounter - 1
+	elseif global.ccdata.durationQueue.length > 0 then
+		deactivateCombinator(popCombinatorFromQueue(global.ccdata.durationQueue))
+		activateCombinator(peekAtQueue(global.ccdata.durationQueue))
+	end
+end)
+
+function deactivateCombinator(combinator)
+	combinator.active = false
+	combinator.entity.get_inventory(defines.inventory.chest).clear()
+	combinator.gui.buttonRow.CCCombinatorButton.caption = "Activate"
+end
+
+function activateCombinator(combinator)
+	if combinator ~= nil then
+		combinator.active = true
+		combinator.entity.get_inventory(defines.inventory.chest).insert({
+			name = CC_SIGNAL_NAME(combinator.output.signalNum),
+			count = combinator.output.amount
+		})
+		combinator.gui.buttonRow.CCCombinatorButton.caption = "Deactivate"
+	end
+end
 
 -- When a force researches the CC tech, generate CC GUIs for all players on that force
 script.on_event(defines.events.on_research_finished, function(event)
