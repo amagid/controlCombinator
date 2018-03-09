@@ -49,7 +49,7 @@ script.on_init(function()
 	ensureCCDataInitialized()
 end)
 
-function ensureCCDataInitialized() {
+function ensureCCDataInitialized()
 	if not global.ccdata then
 		global.ccdata = {
 			durationQueue = createQueue()
@@ -57,7 +57,7 @@ function ensureCCDataInitialized() {
 	elseif not global.ccdata.durationQueue then
 		global.ccdata.durationQueue = createQueue()
 	end
-}
+end
 
 -- Initialize the new player's Control Combinator list
 script.on_event(defines.events.on_player_created, function(event)
