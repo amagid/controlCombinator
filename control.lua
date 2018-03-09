@@ -230,6 +230,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 		else
 			combinator.output.type = "toggle"
 		end
+		combinator.output.duration = tonumber(CCContainer.editCombinatorContainer.durationRow.editCombinatorDuration.text)
 
 		if changedName then
 			addCombinator(CCContainer.container, combinator)
