@@ -272,10 +272,14 @@ script.on_event(defines.events.on_gui_click, function(event)
 		})
 
 		CCContainer.editCombinatorContainer.CCSelectedSignal.text = string.sub(element.name, -1)
-	elseif element.name == "CCToggleMode" or element.name == "CCDurationMode" then
-		element.parent.CCToggleMode.state = false
+	elseif element.name == "CCToggleMode" then
 		element.parent.CCDurationMode.state = false
 		element.state = true
+		element.parent.parent.durationRow.style.visible = false
+	elseif element.name == "CCDurationMode" then
+		element.parent.CCToggleMode.state = false
+		element.state = true
+		element.parent.parent.durationRow.style.visible = true
 	elseif element.name == "CCCombinatorButton" then
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, element.parent.parent.name)
 		if combinator.active then
