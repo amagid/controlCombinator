@@ -280,7 +280,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, element.parent.parent.name)
 		if combinator.active then
 			if combinator.output.type == "duration" then
-				removeFromQueue(combinator)
+				removeFromQueue(global.ccdata.durationQueue, combinator)
 			end
 			deactivateCombinator(combinator)
 		else

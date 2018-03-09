@@ -85,6 +85,43 @@ function popElementFromQueue(queue)
     end
 end
 
+function removeCombinatorFromQueue(queue, combinator)
+    --If this combinator is the next one in the list
+    if queue.first ~= nil and combinator == queue.first.combinator then
+        --If there is another combinator after this one
+        if queue.first.next ~= nil then
+            --Update that combinator's additional time so that it doesn't pop early
+            queue.first.next.additionalTime = queue.first.next.additionalTime + queue.popCounter
+        end
+        --Remove this element from the queue
+        queue.length = queue.length - 1
+        return popElementFromQueue(queue)
+    end
+
+    --Store the current element
+    local element = queue.first
+    --Find our combinator in the list
+    while element.next ~= nil && element.next.combinator ~= combinator do
+        element = element.next
+    end
+    --If we found our combinator
+    if element.next ~= nil then
+        --If our combinator is not the last in the list
+        if element.next.next ~= nil then
+            --Update the additional time of the next element in the list
+            element.next.next.additionalTime = element.next.next.additionalTime + element.next.additionalTime
+        else
+            --If our combinator was the last in the list, set the previous element to be the last in the list
+            queue.last = element
+        end
+        --Remove our combinator from the queue
+        element.next = element.next.next
+        --Update queue length
+        queue.length = queue.length - 1
+    end
+    return element.next
+end
+
 function popCombinatorFromQueue(queue)
     --Pop the element
     local combinator = popElementFromQueue(queue)
