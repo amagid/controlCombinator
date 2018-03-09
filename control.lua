@@ -188,6 +188,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 			CCContainer.editCombinatorContainer.editCombinatorAmount.text = combinator.output.amount
 			CCContainer.editCombinatorContainer.typeButtonRow.CCToggleMode.state = (combinator.output.type == "toggle")
 			CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state = (combinator.output.type == "duration")
+			CCContainer.editCombinatorContainer.durationRow.editCombinatorDuration.text = combinator.output.duration
 		else
 			combinator.output = {
 				signalNum = 1,
