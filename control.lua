@@ -103,6 +103,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 	elseif element.name == "CCToggle" then
 		CCContainer.style.visible = false
 		player.gui.top.CCMaster.style.visible = false
+
+		CCContainer.editCombinatorContainer.style.visible = false
+		--Clear the Edit Combinator Page
+		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
+		
 		player.gui.top.CCToggle.style.visible = true
 	--If this is the Combinator naming GUI
 	elseif element.name == "CCNCButton" then
@@ -248,13 +253,17 @@ script.on_event(defines.events.on_marked_for_deconstruction, function(event)
 	end
 end)
 
-script.on_event(defines.events.on_preplayer_mined_item, function(event)
+script.on_event(defines.events.on_pre_player_mined_item, function(event)
 	if event.entity.name == CC_NAME then
 		event.entity.get_inventory(defines.inventory.chest).clear()
 	end
 end)
 
 function createGUI(player)
+	--If the GUI has already been created, don't create it again
+	if player.gui.top.CCToggle ~= nil then
+		return false
+	end
 
 	--CREATE TOGGLE BUTTON--
 

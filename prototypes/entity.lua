@@ -3,6 +3,7 @@ data:extend({
 		type = "container",
 		name = CC_NAME,
 		icon = CC_ICON_PATH,
+		icon_size = CC_ICON_SIZE,
 		flags = {"placeable-neutral", "player-creation"},
 		minable = {mining_time = 1, result = CC_NAME},
 		max_health = 50,
@@ -42,7 +43,6 @@ data:extend({
 				green = {0.40625, 0.375},
 			}
 		},
-		circuit_connector_sprites = get_circuit_connector_sprites({0.1875, 0.15625}, nil, 18),
 		circuit_wire_max_distance = 7.5
 	},
 

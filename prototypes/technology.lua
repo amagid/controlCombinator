@@ -2,7 +2,8 @@ data:extend({
 	{
 		type = "technology",
 		name = CC_NAME,
-		icon = CC_ICON_PATH,
+		icon = CC_TECH_ICON_PATH,
+		icon_size = CC_TECH_ICON_SIZE,
 		effects = {
 			{
 				type = "unlock-recipe",

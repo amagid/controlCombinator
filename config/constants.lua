@@ -5,6 +5,11 @@ CC_PRETTY_NAME = "Control Combinator"
 
 CC_ICON_PATH = "__ControlCombinator__/graphics/control_combinator_icon.png"
 CC_ENTITY_PATH = "__ControlCombinator__/graphics/control_combinator_entities.png"
+CC_TECH_ICON_PATH = "__ControlCombinator__/graphics/control_combinator_icon.png"
+
+CC_ICON_SIZE = 32
+CC_SIGNAL_ICON_SIZE = 32
+CC_TECH_ICON_SIZE = 32
 
 function CC_SIGNAL_ICON(number)
 	return "__ControlCombinator__/graphics/control_combinator_signal_" .. number .. ".png"
