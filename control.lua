@@ -107,7 +107,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.editCombinatorContainer.style.visible = false
 		--Clear the Edit Combinator Page
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
-		
+
 		player.gui.top.CCToggle.style.visible = true
 	--If this is the Combinator naming GUI
 	elseif element.name == "CCNCButton" then
@@ -383,8 +383,8 @@ function createGUI(player)
 
 	local typeButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal", name="typeButtonRow"}
 
-	typeButtonRow.add{type="radiobutton", state=true, name="CCToggleMode", caption="Toggle Mode", tooltip="When in this mode, a Control Combinator must be manually turned on and off from the GUI."}
-	typeButtonRow.add{type="radiobutton", state=false, name="CCDurationMode", caption="Duration Mode", tooltip="When in this mode, a Control Combinator will automatically turn off after the specified amount of time."}
+	typeButtonRow.add{type="radiobutton", state=true, name="CCToggleMode", caption="Toggle Mode", tooltip="When in this mode, a Control Combinator will stay active until deactivated by the player through the GUI."}
+	typeButtonRow.add{type="radiobutton", state=false, name="CCDurationMode", caption="Duration Mode", tooltip="When in this mode, a Control Combinator will activate for a single tick of the game and then immediately deactivate."}
 
 	local ECCButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal"}
 	ECCButtonRow.add{type="button", name="editCombinatorSaveButton", caption="Save Changes"}
