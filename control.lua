@@ -87,6 +87,9 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.style.visible = true
 		
 		cleanBadCombinators(global.ccdata[event.player_index])
+		--Clear the Edit Combinator Page
+		CCContainer.editCombinatorContainer.style.visible = false
+		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
 
 		--If there are no combinators in data, show message
 		if #global.ccdata[player.index].combinators == 0 then
