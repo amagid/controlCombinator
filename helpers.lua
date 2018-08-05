@@ -68,17 +68,19 @@ function addCombinator(container, combinator)
 
 	local guiReference = container.add{type="frame", name=combinator.name, direction="vertical"}
 	setStyles(guiReference, {
-		minimal_width = CC_WINDOW_WIDTH,
-		maximal_width = CC_WINDOW_WIDTH
+		horizontally_stretchable = true,
+		minimal_width = 240,
+		maximal_width = 540
 	})
 	setStyles(guiReference.add{type="label", caption=combinator.name, name="combinatorName"}, {
 		top_padding = 25,
-		font = "default-large-bold"
+		font = "default-large-bold",
+		single_line = false,
+		minimal_width = 210,
+		maximal_width = 510
 	})
 	local buttonRow = guiReference.add{type="flow", name="buttonRow", direction="horizontal"}
 	setStyles(buttonRow, {
-		minimal_width = CC_WINDOW_WIDTH,
-		maximal_width = CC_WINDOW_WIDTH
 	})
 	buttonRow.add{type="button", name="CCEditCombinator", caption="Edit"}
 	buttonRow.add{type="button", name="CCCombinatorButton", caption="Activate"}
@@ -103,7 +105,7 @@ function clearEditCombinatorPage(page)
 	page.editCombinatorDesc.text = ""
 	page.combinatorName.text = ""
 	for i = 1, 10, 1 do
-		setStyles(page.signalButtonRow["CCSignalButton" .. i], {
+		setStyles(getSignalButton(i, page.signalButtonRowContainer), {
 			minimal_width = 40,
 			minimal_height = 40,
 			maximal_width = 40,
@@ -123,4 +125,12 @@ function findCombinatorByName(combinatorList, name)
 		end
 	end
 	return nil
+end
+
+function getSignalButton(signalNum, signalButtonRowContainer)
+	if signalNum < 6 then
+		return signalButtonRowContainer.signalButtonRow1["CCSignalButton" .. signalNum]
+	else
+		return signalButtonRowContainer.signalButtonRow2["CCSignalButton" .. signalNum]
+	end
 end

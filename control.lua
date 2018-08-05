@@ -74,14 +74,14 @@ script.on_event(defines.events.on_gui_click, function(event)
 	-- Store, element, and GUI container for faster access
 	local player = game.players[event.player_index]
 	local element = event.element
-	local CCContainer = player.gui.top.CCMaster.CCContainer
+	local CCContainer = player.gui.center.CCMaster.CCContainer
 
 	--If this is the master CC GUI toggle button and the GUI isn't visible
 	if element.name == "CCToggle" and not CCContainer.style.visible then
 		-- Hide the button
 		element.style.visible = false
 		--Hide central gui until fully loaded
-		player.gui.top.CCMaster.style.visible = true
+		player.gui.center.CCMaster.style.visible = true
 		CCContainer.container.style.visible = false
 		CCContainer.top.caption = "Loading..."
 		CCContainer.style.visible = true
@@ -105,7 +105,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 	--If this is the master CC GUI toggle button and the GUI is visible
 	elseif element.name == "CCToggle" then
 		CCContainer.style.visible = false
-		player.gui.top.CCMaster.style.visible = false
+		player.gui.center.CCMaster.style.visible = false
 
 		CCContainer.editCombinatorContainer.style.visible = false
 		--Clear the Edit Combinator Page
@@ -132,11 +132,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 
 		if combinator.output then
 			if combinator.output.signalNum then
-				setStyles(CCContainer.editCombinatorContainer.signalButtonRow["CCSignalButton" .. combinator.output.signalNum], {
-					minimal_width = 80,
-					minimal_height = 80,
-					maximal_width = 80,
-					maximal_height = 80
+				setStyles(getSignalButton(combinator.output.signalNum, CCContainer.editCombinatorContainer.signalButtonRowContainer), {
+					minimal_width = 60,
+					minimal_height = 60,
+					maximal_width = 60,
+					maximal_height = 60
 				})
 			end
 			
@@ -151,11 +151,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 				type = "toggle"
 			}
 			
-			setStyles(CCContainer.editCombinatorContainer.signalButtonRow["CCSignalButton" .. combinator.output.signalNum], {
-				minimal_width = 80,
-				minimal_height = 80,
-				maximal_width = 80,
-				maximal_height = 80
+			setStyles(CCContainer.editCombinatorContainer.signalButtonRowContainer.signalButtonRow["CCSignalButton" .. combinator.output.signalNum], {
+				minimal_width = 60,
+				minimal_height = 60,
+				maximal_width = 60,
+				maximal_height = 60
 			})
 		
 			CCContainer.editCombinatorContainer.CCSelectedSignal.text = combinator.output.signalNum
@@ -178,8 +178,19 @@ script.on_event(defines.events.on_gui_click, function(event)
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, CCContainer.editCombinatorContainer.combinatorName.text)
 		combinator.name = CCContainer.editCombinatorContainer.editCombinatorName.text
 		combinator.description = CCContainer.editCombinatorContainer.editCombinatorDesc.text
-		combinator.output.signalNum = CCContainer.editCombinatorContainer.CCSelectedSignal.text
-		combinator.output.amount = CCContainer.editCombinatorContainer.editCombinatorAmount.text
+		
+		local signalNum = tonumber(CCContainer.editCombinatorContainer.CCSelectedSignal.text)
+		if signalNum == nil or signalNum < 0 then
+			signalNum = 0
+		end
+		combinator.output.signalNum = signalNum
+
+		local amount = tonumber(CCContainer.editCombinatorContainer.editCombinatorAmount.text)
+		if amount == nil or amount < 0 then
+			amount = 0
+		end
+		combinator.output.amount = amount
+		
 		if CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state then
 			combinator.output.type = "duration"
 		else
@@ -220,7 +231,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 	elseif string.find(element.name, "CCSignalButton") then
 		--Deselect all of the buttons
 		for i = 1, 10, 1 do
-			setStyles(element.parent["CCSignalButton" .. i], {
+			setStyles(getSignalButton(i, element.parent.parent), {
 				minimal_width = 40,
 				minimal_height = 40,
 				maximal_width = 40,
@@ -229,10 +240,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 		end
 		--Select this button
 		setStyles(element, {
-			minimal_width = 80,
-			minimal_height = 80,
-			maximal_width = 80,
-			maximal_height = 80
+			minimal_width = 60,
+			minimal_height = 60,
+			maximal_width = 60,
+			maximal_height = 60
 		})
 
 		CCContainer.editCombinatorContainer.CCSelectedSignal.text = string.sub(element.name, -1)
@@ -282,22 +293,21 @@ function createGUI(player)
 
 	--CREATE MAIN GUI WINDOW--
 
-	local CCMaster = player.gui.top.add{type="flow", name="CCMaster"}
+	local CCMaster = player.gui.center.add{type="flow", name="CCMaster"}
 	setStyles(CCMaster, {
-		top_padding = 100,
-		left_padding = 100,
-		minimal_width = CC_WINDOW_WIDTH,
-		maximal_width = CC_WINDOW_WIDTH,
-		visible = false
+		top_padding = 50,
+		left_padding = 50,
+		bottom_padding = 50,
+		right_padding = 50,
+		visible = false,
+		maximal_height = 400,
+		minimal_width = 300,
+		maximal_width = 600
 	})
 	local CCContainer = CCMaster.add{type="frame", name="CCContainer", direction="vertical"}
 	setStyles(CCContainer, {
-		minimal_width = CC_WINDOW_WIDTH - 110,
-		maximal_width = CC_WINDOW_WIDTH - 110
 	})
 	setStyles(CCContainer.add{type="flow", name="top", direction="horizontal"}, {
-		minimal_width = CC_WINDOW_WIDTH,
-		maximal_width = CC_WINDOW_WIDTH
 	})
 	CCContainer.top.add{type="button", name="CCToggle", caption="Close"}
 	local CCCTLabel = CCContainer.top.add{type="label", caption="Control Combinators"}
@@ -307,12 +317,12 @@ function createGUI(player)
 	})
 	local container = CCContainer.add{type="scroll-pane", name="container", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical"}
 	setStyles(container, {
-		visible = false,
-		minimal_height = CC_WINDOW_HEIGHT,
-		maximal_height = CC_WINDOW_HEIGHT
+		visible = false
 	})
 	
-	container.add{type="label", name="noCombinatorsMessage", caption="You have no combinators yet. Build a combinator, and it will show up here."}
+	setStyles(container.add{type="label", name="noCombinatorsMessage", caption="You have no combinators yet. Build a combinator, and it will show up here."}, {
+		single_line = false
+	})
 
 	--POPULATE MAIN GUI WINDOW--
 
@@ -329,33 +339,37 @@ function createGUI(player)
 	end
 
 	--Add padding to the top of every existing label that is next to buttons
-	addLabelPadding(player.gui.top.CCMaster)
+	addLabelPadding(player.gui.center.CCMaster)
 
 	--Force all boxes to be full width
-	setWidths(player.gui.top.CCMaster, 0)
+	--setWidths(player.gui.center.CCMaster, 0)
 
 	--CREATE EDIT COMBINATOR PAGE--
 
 	local editCombinatorContainer = CCContainer.add{type="scroll-pane", name="editCombinatorContainer", vertical_scroll_policy="auto", horizontal_scroll_policy="never", direction="vertical", caption="Edit Combinator"}
 
 	setStyles(editCombinatorContainer, {
-		visible = false,
-		minimal_height = CC_WINDOW_HEIGHT,
-		maximal_height = CC_WINDOW_HEIGHT
+		visible = false
 	})
 
 	setStyles(editCombinatorContainer.add{type="label", caption="Combinator Name"}, {
 		top_padding = 30,
-		font = "default-large-bold"
+		font = "default-large-bold",
+		single_line = false
 	})
-	editCombinatorContainer.add{type="textfield", name="editCombinatorName", tooltip="FYI: Editing the Control Combinator's name will move the Combinator's entry to the bottom of your list"}
+	setStyles(editCombinatorContainer.add{type="textfield", name="editCombinatorName", tooltip="FYI: Editing the Control Combinator's name will move the Combinator's entry to the bottom of your list"}, {
+		horizontally_stretchable = true,
+		minimal_width = 200
+	})
 	setStyles(editCombinatorContainer.add{type="label", caption="Combinator Description"}, {
 		top_padding = 30,
-		font = "default-large-bold"
+		font = "default-large-bold",
+		single_line = false
 	})
-	setStyles(editCombinatorContainer.add{type="text-box", name="editCombinatorDesc"}, {
-		minimal_width=CC_WINDOW_WIDTH,
-		maximal_width=CC_WINDOW_WIDTH
+	setStyles(editCombinatorContainer.add{type="text-box", word_wrap=true, name="editCombinatorDesc"}, {
+		height = 100,
+		horizontally_stretchable = true,
+		minimal_width = 200
 	})
 	setStyles(editCombinatorContainer.add{type="textfield", name="combinatorName"}, {
 		visible = false
@@ -363,17 +377,29 @@ function createGUI(player)
 
 	setStyles(editCombinatorContainer.add{type="label", caption="Output Signal"}, {
 		top_padding = 30,
-		font = "default-large-bold"
+		font = "default-large-bold",
+		single_line = false
 	})
 
 	setStyles(editCombinatorContainer.add{type="textfield", name="CCSelectedSignal"}, {
 		visible = false
 	})
 
-	local signalButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal", name="signalButtonRow"}
+	local signalButtonRowContainer = editCombinatorContainer.add{type="flow", direction="vertical", name="signalButtonRowContainer"}
 
-	for i=1, 10, 1 do
-		setStyles(signalButtonRow.add{type="sprite-button", name="CCSignalButton" .. i, sprite="item/" .. CC_SIGNAL_NAME(i)}, {
+	local signalButtonRow1 = signalButtonRowContainer.add{type="flow", direction="horizontal", name="signalButtonRow1"}
+	local signalButtonRow2 = signalButtonRowContainer.add{type="flow", direction="horizontal", name="signalButtonRow2"}
+
+	for i=1, 5, 1 do
+		setStyles(signalButtonRow1.add{type="sprite-button", name="CCSignalButton" .. i, sprite="item/" .. CC_SIGNAL_NAME(i)}, {
+			minimal_width = 40,
+			minimal_height = 40,
+			maximal_width = 40,
+			maximal_height = 40
+		})
+	end
+	for i=6, 10, 1 do
+		setStyles(signalButtonRow2.add{type="sprite-button", name="CCSignalButton" .. i, sprite="item/" .. CC_SIGNAL_NAME(i)}, {
 			minimal_width = 40,
 			minimal_height = 40,
 			maximal_width = 40,
@@ -383,13 +409,18 @@ function createGUI(player)
 
 	setStyles(editCombinatorContainer.add{type="label", caption="Signal Amount"}, {
 		top_padding = 30,
-		font = "default-large-bold"
+		font = "default-large-bold",
+		single_line = false
 	})
-	editCombinatorContainer.add{type="textfield", name="editCombinatorAmount"}
+	setStyles(editCombinatorContainer.add{type="textfield", name="editCombinatorAmount"}, {
+		horizontally_stretchable = true,
+		minimal_width = 200
+	})
 
 	setStyles(editCombinatorContainer.add{type="label", caption="Signal Mode"}, {
 		top_padding = 30,
-		font = "default-large-bold"
+		font = "default-large-bold",
+		single_line = false
 	})
 
 	local typeButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal", name="typeButtonRow"}
