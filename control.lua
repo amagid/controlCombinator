@@ -209,6 +209,14 @@ script.on_event(defines.events.on_gui_click, function(event)
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
 		--Clean the combinator list
 		cleanBadCombinators(global.ccdata[event.player_index])
+
+		--Check if we should show the 'no combinators' message
+		if #global.ccdata[player.index].combinators == 0 then
+			CCContainer.container.noCombinatorsMessage.style.visible = true
+		else
+			CCContainer.container.noCombinatorsMessage.style.visible = false
+		end
+
 	elseif string.find(element.name, "CCSignalButton") then
 		--Deselect all of the buttons
 		for i = 1, 10, 1 do
