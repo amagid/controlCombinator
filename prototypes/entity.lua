@@ -8,6 +8,7 @@ data:extend({
 		minable = {mining_time = 1, result = CC_NAME},
 		max_health = 50,
 		corpse = "small-remnants",
+		dying_explosion = "medium-explosion",
 		open_sound = { filename = "__base__/sound/metallic-chest-open.ogg", volume=0.65 },
 		close_sound = { filename = "__base__/sound/metallic-chest-close.ogg", volume = 0.7 },
 		collision_box = {{-0.35, -0.35}, {0.35, 0.35}},
