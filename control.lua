@@ -148,8 +148,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 			
 			CCContainer.editCombinatorContainer.CCSelectedSignal.text = combinator.output.signalNum
 			CCContainer.editCombinatorContainer.editCombinatorAmount.text = combinator.output.amount
+--[[
 			CCContainer.editCombinatorContainer.typeButtonRow.CCToggleMode.state = (combinator.output.type == "toggle")
 			CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state = (combinator.output.type == "duration")
+--]]
 		else
 			combinator.output = {
 				signalNum = 1,
@@ -166,8 +168,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 		
 			CCContainer.editCombinatorContainer.CCSelectedSignal.text = combinator.output.signalNum
 			CCContainer.editCombinatorContainer.editCombinatorAmount.text = combinator.output.amount
+--[[
 			CCContainer.editCombinatorContainer.typeButtonRow.CCToggleMode.state = (combinator.output.type == "toggle")
 			CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state = (combinator.output.type == "duration")
+--]]
 		end
 		--Show combinator edit page
 		CCContainer.editCombinatorContainer.style.visible = true
@@ -202,12 +206,14 @@ script.on_event(defines.events.on_gui_click, function(event)
 			amount = 0
 		end
 		combinator.output.amount = amount
-		
+
+--[[
 		if CCContainer.editCombinatorContainer.typeButtonRow.CCDurationMode.state then
 			combinator.output.type = "duration"
 		else
 			combinator.output.type = "toggle"
 		end
+--]]
 
 		if changedName then
 			addCombinator(CCContainer.container, combinator)
@@ -259,10 +265,13 @@ script.on_event(defines.events.on_gui_click, function(event)
 		})
 
 		CCContainer.editCombinatorContainer.CCSelectedSignal.text = string.sub(element.name, -1)
+
+--[[
 	elseif element.name == "CCToggleMode" or element.name == "CCDurationMode" then
 		element.parent.CCToggleMode.state = false
 		element.parent.CCDurationMode.state = false
 		element.state = true
+--]]
 	elseif element.name == "CCCombinatorButton" then
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, element.parent.parent.name)
 		local inventory = combinator.entity.get_inventory(defines.inventory.chest)
@@ -429,6 +438,12 @@ function createGUI(player)
 		minimal_width = 200
 	})
 
+	setStyles(editCombinatorContainer.add{type="flow", direction="horizontal"}, {
+		minimal_height = 30,
+		maximal_height = 30
+	})
+
+--[[
 	setStyles(editCombinatorContainer.add{type="label", caption="Signal Mode"}, {
 		top_padding = 30,
 		font = "default-large-bold",
@@ -439,7 +454,7 @@ function createGUI(player)
 
 	typeButtonRow.add{type="radiobutton", state=true, name="CCToggleMode", caption="Toggle Mode", tooltip="When in this mode, a Control Combinator will stay active until deactivated by the player through the GUI."}
 	typeButtonRow.add{type="radiobutton", state=false, name="CCDurationMode", caption="Duration Mode", tooltip="When in this mode, a Control Combinator will activate for a single tick of the game and then immediately deactivate."}
-
+--]]
 	local ECCButtonRow = editCombinatorContainer.add{type="flow", direction="horizontal"}
 	ECCButtonRow.add{type="button", name="editCombinatorSaveButton", caption="Save Changes"}
 	ECCButtonRow.add{type="button", name="editCombinatorCancelButton", caption="Discard Changes"}

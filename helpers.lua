@@ -114,8 +114,10 @@ function clearEditCombinatorPage(page)
 	end
 	page.CCSelectedSignal.text = ""
 	page.editCombinatorAmount.text = ""
+--[[
 	page.typeButtonRow.CCToggleMode.state = false
 	page.typeButtonRow.CCDurationMode.state = false
+--]]
 end
 
 function findCombinatorByName(combinatorList, name)
