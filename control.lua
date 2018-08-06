@@ -42,8 +42,10 @@ script.on_event(defines.events.on_player_created, function(event)
 	-- Store the player to improve efficiency
 	local player = game.players[event.player_index]
 
-	-- Generate new base CCData entry
-	global.ccdata[event.player_index] = CC_DEFAULT_PRIVATE_DATA()
+	if not global.ccdata[event.player_index] then
+		-- Generate new base CCData entry
+		global.ccdata[event.player_index] = CC_DEFAULT_PRIVATE_DATA()
+	end
 
 	-- If the player's force has already researched the CC tech (or we're in DEBUG mode), create their CC GUI
 	if player.force.technologies[CC_NAME].researched or DEBUG then
@@ -458,5 +460,19 @@ script.on_event(defines.events.on_built_entity, function(event)
 		local newCombinator = generateCombinatorReference("New Combinator", event.created_entity)
 		table.insert(global.ccdata[event.player_index].combinators, newCombinator)
 		game.players[event.player_index].gui.center.CCNewCombinator.CCNCIndex.text = #global.ccdata[event.player_index].combinators
+	end
+end)
+
+script.on_event(defines.events.on_robot_built_entity, function(event)
+	if event.created_entity.name == CC_NAME then
+		if event.robot.last_user == nil then
+			event.created_entity.destroy()
+		else
+			event.created_entity.operable = false
+			local name = "Unnamed Control Combinator (" .. math.random(9999) .. ")"
+			local newCombinator = generateCombinatorReference(name, event.created_entity)
+			table.insert(global.ccdata[event.robot.last_user.index].combinators, newCombinator)
+			addCombinator(CCContainer.container, newCombinator)
+		end
 	end
 end)
