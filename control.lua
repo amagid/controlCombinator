@@ -465,14 +465,27 @@ end)
 
 script.on_event(defines.events.on_robot_built_entity, function(event)
 	if event.created_entity.name == CC_NAME then
-		if event.robot.last_user == nil then
-			event.created_entity.destroy()
+
+		event.created_entity.operable = false
+
+		-- There are certain cases where it is not possible to determine the Player
+		-- based on the robot and entity data alone. Unfortunately, this would present a
+		-- problem in configuring the Control Combinator. Therefore, if this data
+		-- is not known at build time, the Combinator's deconstruction is ordered.
+		local lastUser = nil
+		if event.created_entity.last_user ~= nil then
+			lastUser = event.created_entity.last_user.index
+		elseif event.robot.last_user ~= nil then
+			lastUser = event.robot.last_user.index
+		end
+
+		if lastUser == nil then
+			event.created_entity.order_deconstruction(event.robot.force)
 		else
-			event.created_entity.operable = false
 			local name = "Unnamed Control Combinator (" .. math.random(9999) .. ")"
 			local newCombinator = generateCombinatorReference(name, event.created_entity)
-			table.insert(global.ccdata[event.robot.last_user.index].combinators, newCombinator)
-			addCombinator(CCContainer.container, newCombinator)
+			table.insert(global.ccdata[lastUser].combinators, newCombinator)
+			addCombinator(game.players[lastUser].gui.center.CCMaster.CCContainer.container, newCombinator)
 		end
 	end
 end)
