@@ -254,8 +254,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 		CCContainer.editCombinatorContainer.style.visible = false
 		--Destroy the combinator
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, CCContainer.editCombinatorContainer.combinatorName.text)
-		combinator.entity.force = "enemy"
-		combinator.entity.die()
+		if combinator.entity.valid then
+			combinator.entity.force = "enemy"
+			combinator.entity.die()
+		end
 		--Clear the Edit Combinator Page
 		clearEditCombinatorPage(CCContainer.editCombinatorContainer)
 		--Clean the combinator list
@@ -301,6 +303,9 @@ script.on_event(defines.events.on_gui_click, function(event)
 --]]
 	elseif element.name == "CCCombinatorButton" then
 		local combinator = findCombinatorByName(global.ccdata[event.player_index].combinators, element.parent.parent.name)
+		if not combinator.entity.valid then
+			return false
+		end
 		local inventory = combinator.entity.get_inventory(defines.inventory.chest)
 		inventory.clear()
 		if combinator.active then
