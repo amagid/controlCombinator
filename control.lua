@@ -222,10 +222,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 		end
 		combinator.output.signalNum = signalNum
 
-		local amount = math.floor(tonumber(CCContainer.editCombinatorContainer.editCombinatorAmount.text))
+		local amount = tonumber(CCContainer.editCombinatorContainer.editCombinatorAmount.text)
 		if amount == nil or amount < 1 then
 			amount = 1
 		end
+		amount = math.floor(amount)
 		combinator.output.amount = amount
 
 --[[
@@ -356,6 +357,7 @@ function createGUI(player)
 	})
 	local CCContainer = CCMaster.add{type="frame", name="CCContainer", direction="vertical"}
 	setStyles(CCContainer, {
+		visible = false
 	})
 	setStyles(CCContainer.add{type="flow", name="top", direction="horizontal"}, {
 	})
@@ -551,15 +553,15 @@ end)
 
 script.on_event(defines.events.on_selected_entity_changed, function(event)
 	local entity = game.players[event.player_index].selected
-	if entity and entity.name == CC_NAME and entity.last_user and entity.last_user.index == event.player_index and global.ccdata[event.player_index] and global.ccdata[event.player_index].combinators and game.players[event.player_index] and game.players[event.player_index].gui and game.players[event.player_index].gui.center.CCMaster and game.players[event.player_index].gui.center.CCMaster.style.visible == false and game.players[event.player_index].gui.center.CCNewCombinator and game.players[event.player_index].gui.center.CCNewCombinator.style.visible == false and game.players[event.player_index].gui.center.CCViewCombinator and game.players[event.player_index].gui.center.CCViewCombinator.style.visible == false then
+	if entity and entity.name == CC_NAME and entity.last_user and entity.last_user.index == event.player_index and global.ccdata[event.player_index] and global.ccdata[event.player_index].combinators and game.players[event.player_index] and game.players[event.player_index].gui and game.players[event.player_index].gui.center.CCMaster and game.players[event.player_index].gui.center.CCMaster.CCContainer and game.players[event.player_index].gui.center.CCMaster.CCContainer.style.visible == false and game.players[event.player_index].gui.center.CCNewCombinator and game.players[event.player_index].gui.center.CCNewCombinator.style.visible == false and game.players[event.player_index].gui.center.CCViewCombinator and game.players[event.player_index].gui.center.CCViewCombinator.style.visible == false then
 		for _, combinator in ipairs(global.ccdata[event.player_index].combinators) do
 			if combinator.entity == entity then
 				game.players[event.player_index].gui.center.CCViewCombinator.CCVCName.caption = "Control Combinator: " .. combinator.name
 				game.players[event.player_index].gui.center.CCViewCombinator.style.visible = true
 				return true
 			end
-			return false
 		end
+		return false
 	elseif game.players[event.player_index].gui.center.CCViewCombinator then
 		game.players[event.player_index].gui.center.CCViewCombinator.style.visible = false
 	end
