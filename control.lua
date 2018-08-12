@@ -141,6 +141,9 @@ script.on_event(defines.events.on_gui_click, function(event)
 		if name == nil or name == "" then
 			name = "Unnamed Control Combinator (" .. math.random(9999) .. ")"
 		end
+		if not global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)] then
+			return false
+		end
 		global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)].name = name
 		addCombinator(CCContainer.container, global.ccdata[event.player_index].combinators[tonumber(element.parent.CCNCIndex.text)])
 		element.parent.style.visible = false
