@@ -511,10 +511,14 @@ end
 script.on_event(defines.events.on_built_entity, function(event)
 	if event.created_entity.name == CC_NAME then
 		event.created_entity.operable = false
-		game.players[event.player_index].gui.center.CCNewCombinator.style.visible = true
-		local newCombinator = generateCombinatorReference("New Combinator", event.created_entity)
+		local newCombinator = generateCombinatorReference("Unnamed Control Combinator (" .. math.random(9999) .. ")", event.created_entity)
 		table.insert(global.ccdata[event.player_index].combinators, newCombinator)
-		game.players[event.player_index].gui.center.CCNewCombinator.CCNCIndex.text = #global.ccdata[event.player_index].combinators
+		if game.players[event.player_index].gui.center.CCNewCombinator.style.visible then
+			addCombinator(game.players[event.player_index].gui.center.CCMaster.CCContainer.container, newCombinator)
+		else
+			game.players[event.player_index].gui.center.CCNewCombinator.CCNCIndex.text = #global.ccdata[event.player_index].combinators
+			game.players[event.player_index].gui.center.CCNewCombinator.style.visible = true
+		end
 	end
 end)
 
