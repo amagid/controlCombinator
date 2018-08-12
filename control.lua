@@ -229,6 +229,9 @@ script.on_event(defines.events.on_gui_click, function(event)
 		if amount == nil or amount < 1 then
 			amount = 1
 		end
+		if amount > 1000000 then
+			amount = 1000000
+		end
 		amount = math.floor(amount)
 		combinator.output.amount = amount
 
