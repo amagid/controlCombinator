@@ -32,6 +32,29 @@ script.on_init(function()
 	end
 end)
 
+-- If the configuration has changed, destroy and re-create each player's CC GUI
+script.on_configuration_changed(function()
+	local gui
+	for index, _ in pairs(global.ccdata) do
+		if game.players[index] and game.players[index].gui then
+			gui = game.players[index].gui
+			if gui.center.CCMaster then
+				gui.center.CCMaster.destroy()
+			end
+			if gui.top.CCToggle then
+				gui.top.CCToggle.destroy()
+			end
+			if gui.center.CCNewCombinator then
+				gui.center.CCNewCombinator.destroy()
+			end
+			if gui.center.CCViewCombinator then
+				gui.center.CCViewCombinator.destroy()
+			end
+			createGUI(game.players[index])
+		end
+	end
+end)
+
 -- Initialize the new player's Control Combinator list
 script.on_event(defines.events.on_player_created, function(event)
 	-- Initialize global CCData if not yet initialized
@@ -291,6 +314,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 			combinator.active = true
 		end
 	end
+
 end)
 
 script.on_event(defines.events.on_marked_for_deconstruction, function(event)
@@ -471,6 +495,13 @@ function createGUI(player)
 	player.gui.center.CCNewCombinator.add{type="textfield", name="CCNCField"}
 	player.gui.center.CCNewCombinator.add{type="button", name="CCNCButton", caption="Set Name"}
 
+	--CREATE VIEW COMBINATOR GUI--
+	player.gui.center.add{type="frame", name="CCViewCombinator"}.style.visible = false
+	setStyles(player.gui.center.CCViewCombinator.add{type="label", caption="", name="CCVCName"}, {
+		font = "default-large-bold",
+		top_padding = CC_LABEL_PADDING
+	})
+
 end
 
 function activateGUI(player)
@@ -511,5 +542,21 @@ script.on_event(defines.events.on_robot_built_entity, function(event)
 			table.insert(global.ccdata[lastUser].combinators, newCombinator)
 			addCombinator(game.players[lastUser].gui.center.CCMaster.CCContainer.container, newCombinator)
 		end
+	end
+end)
+
+script.on_event(defines.events.on_selected_entity_changed, function(event)
+	local entity = game.players[event.player_index].selected
+	if entity and entity.name == CC_NAME and entity.last_user and entity.last_user.index == event.player_index and global.ccdata[event.player_index] and global.ccdata[event.player_index].combinators and game.players[event.player_index] and game.players[event.player_index].gui and game.players[event.player_index].gui.center.CCMaster and game.players[event.player_index].gui.center.CCMaster.style.visible == false and game.players[event.player_index].gui.center.CCNewCombinator and game.players[event.player_index].gui.center.CCNewCombinator.style.visible == false and game.players[event.player_index].gui.center.CCViewCombinator and game.players[event.player_index].gui.center.CCViewCombinator.style.visible == false then
+		for _, combinator in ipairs(global.ccdata[event.player_index].combinators) do
+			if combinator.entity == entity then
+				game.players[event.player_index].gui.center.CCViewCombinator.CCVCName.caption = "Control Combinator: " .. combinator.name
+				game.players[event.player_index].gui.center.CCViewCombinator.style.visible = true
+				return true
+			end
+			return false
+		end
+	elseif game.players[event.player_index].gui.center.CCViewCombinator then
+		game.players[event.player_index].gui.center.CCViewCombinator.style.visible = false
 	end
 end)
