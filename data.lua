@@ -1,3 +1,5 @@
+require "util"
+
 require("config.constants")
 
 require("prototypes.style")

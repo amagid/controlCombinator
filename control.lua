@@ -46,26 +46,24 @@ script.on_event(defines.events.on_player_created, function(event)
 		-- Generate new base CCData entry
 		global.ccdata[event.player_index] = CC_DEFAULT_PRIVATE_DATA()
 	end
+	createGUI(player)
 
 	-- If the player's force has already researched the CC tech (or we're in DEBUG mode), create their CC GUI
 	if player.force.technologies[CC_NAME].researched or DEBUG then
-		createGUI(player)
+		activateGUI(player)
 	end
 end)
 
 -- When a force researches the CC tech, generate CC GUIs for all players on that force
 script.on_event(defines.events.on_research_finished, function(event)
-	game.players[1].print("Researched a tech: " .. event.research.name)
 	if event.research.name == CC_NAME then
-		game.players[1].print("It's our tech!")
 		for _, player in pairs(event.research.force.players) do
 			if global.ccdata[player.index] == nil then
 				global.ccdata[player.index] = CC_DEFAULT_PRIVATE_DATA()
 			end
-			game.players[1].print("Player")
 			if player and type(player) ~= "number" and type(player) ~= "function" and player.valid then
-				game.players[1].print("Creating GUI")
 				createGUI(player)
+				activateGUI(player)
 			end
 		end
 	end
@@ -197,13 +195,13 @@ script.on_event(defines.events.on_gui_click, function(event)
 		
 		local signalNum = tonumber(CCContainer.editCombinatorContainer.CCSelectedSignal.text)
 		if signalNum == nil or signalNum < 0 then
-			signalNum = 0
+			signalNum = 1
 		end
 		combinator.output.signalNum = signalNum
 
-		local amount = tonumber(CCContainer.editCombinatorContainer.editCombinatorAmount.text)
-		if amount == nil or amount < 0 then
-			amount = 0
+		local amount = math.floor(tonumber(CCContainer.editCombinatorContainer.editCombinatorAmount.text))
+		if amount == nil or amount < 1 then
+			amount = 1
 		end
 		combinator.output.amount = amount
 
@@ -264,7 +262,12 @@ script.on_event(defines.events.on_gui_click, function(event)
 			maximal_height = 60
 		})
 
-		CCContainer.editCombinatorContainer.CCSelectedSignal.text = string.sub(element.name, -1)
+		local num = string.sub(element.name, -1)
+		if num == '0' then
+			num = '10'
+		end
+		CCContainer.editCombinatorContainer.CCSelectedSignal.text = num
+		
 
 --[[
 	elseif element.name == "CCToggleMode" or element.name == "CCDurationMode" then
@@ -310,7 +313,9 @@ function createGUI(player)
 
 	--CREATE TOGGLE BUTTON--
 
-	player.gui.top.add{type="button", name="CCToggle", caption="Control Combinator", tooltip="Toggle the Control Combinator menu."}
+	setStyles(player.gui.top.add{type="button", name="CCToggle", caption="Control Combinator", tooltip="Toggle the Control Combinator menu."}, {
+		visible = false
+	})
 
 	--CREATE MAIN GUI WINDOW--
 
@@ -466,6 +471,10 @@ function createGUI(player)
 	player.gui.center.CCNewCombinator.add{type="textfield", name="CCNCField"}
 	player.gui.center.CCNewCombinator.add{type="button", name="CCNCButton", caption="Set Name"}
 
+end
+
+function activateGUI(player)
+	setStyles(player.gui.top.CCToggle, { visible = true })
 end
 
 script.on_event(defines.events.on_built_entity, function(event)

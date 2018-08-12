@@ -1,22 +1,22 @@
-DEBUG = true
+DEBUG = false
 
-CC_NAME = "control_combinator"
+CC_NAME = "control-combinator"
 CC_PRETTY_NAME = "Control Combinator"
 
 CC_ICON_PATH = "__ControlCombinator__/graphics/control_combinator_icon.png"
-CC_ENTITY_PATH = "__ControlCombinator__/graphics/control_combinator_entities.png"
-CC_TECH_ICON_PATH = "__ControlCombinator__/graphics/control_combinator_icon.png"
+CC_ENTITY_PATH = "__ControlCombinator__/graphics/control_combinator_gallery.png"
+CC_TECH_ICON_PATH = "__ControlCombinator__/graphics/control_combinator_tech.png"
 
-CC_ICON_SIZE = 32
+CC_ICON_SIZE = 38
 CC_SIGNAL_ICON_SIZE = 32
-CC_TECH_ICON_SIZE = 32
+CC_TECH_ICON_SIZE = 128
 
 function CC_SIGNAL_ICON(number)
 	return "__ControlCombinator__/graphics/control_combinator_signal_" .. number .. ".png"
 end
 
 function CC_SIGNAL_NAME(number)
-	return "control_combinator_signal_" .. number
+	return "control-combinator-signal-" .. number
 end
 
 function CC_SIGNAL_PRETTY_NAME(number)

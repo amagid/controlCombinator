@@ -11,11 +11,15 @@ data:extend({
 			}
 		},
 		unit = {
-			count = 1,
+			count = 150,
 			ingredients = {
-				{"science-pack-1", 1}
+				{"science-pack-1", 1},
+				{"science-pack-2", 1},
 			},
-			time = 5
-		}
+			time = 20
+		},
+		prerequisites = {"circuit-network", "advanced-electronics", "battery"},
+		localised_description = {"technology-description." .. CC_NAME},
+		order = "a-d-d"
 	}
 })

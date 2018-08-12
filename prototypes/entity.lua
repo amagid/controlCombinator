@@ -26,8 +26,8 @@ data:extend({
 			filename = CC_ENTITY_PATH,
 			x = 0,
 			y = 0,
-			width = 82,
-			height = 60,
+			width = 50,
+			height = 50,
 			frame_count = 1,
 			shift = {0.140625, 0.140625}
 		},
@@ -35,13 +35,13 @@ data:extend({
 		{
 			shadow =
 			{
-				red = {0.734375, 0.453125},
-				green = {0.609375, 0.515625},
+				red = {0.26, -0.44},
+				green = {-0.3, -0.44},
 			},
 			wire =
 			{
-				red = {0.40625, 0.21875},
-				green = {0.40625, 0.375},
+				red = {0.22, -0.48},
+				green = {-0.26, -0.48},
 			}
 		},
 		circuit_wire_max_distance = 7.5
